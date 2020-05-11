@@ -1,24 +1,25 @@
 package com.example.airlines.dao;
 
-import com.example.airlines.model.Flights;
+import com.example.airlines.model.Access;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
-public interface FlightsDAO extends JpaRepository<Flights, Integer> {
+public interface AccessDAO extends JpaRepository<Access, Integer> {
 
     @Override
-    List<Flights> findAll();
+    List<Access> findAll();
 
     @Override
-    java.util.Optional<Flights> findById(Integer Id);
+    Optional<Access> findById(Integer integer);
 
     @Override
-    Flights save(Flights flight);
+    Access save(Access access);
 
     @Override
     void deleteById(Integer id);

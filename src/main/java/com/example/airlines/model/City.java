@@ -1,8 +1,6 @@
 package com.example.airlines.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity(name = "City")

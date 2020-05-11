@@ -12,9 +12,17 @@ import java.util.List;
 @Repository
 @Transactional
 public interface AirportsDAO extends JpaRepository<Airports,Integer> {
+
+    @Override
     List<Airports> findAll();
+
+    @Override
     java.util.Optional<Airports> findById(Integer id);
+
+    @Override
     Airports save(Airports airport);
+
+    @Override
     void deleteById(Integer id);
 
     @Query("Select A from Airports A where A.airportInTheCity.nameCity = :name")

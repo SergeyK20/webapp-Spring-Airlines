@@ -1,9 +1,7 @@
 package com.example.airlines.controller;
 
 import com.example.airlines.dao.AirportsDAO;
-import com.example.airlines.dao.CityDAO;
 import com.example.airlines.model.Airports;
-import com.example.airlines.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +29,7 @@ public class AirportsController {
     }
 
     @GetMapping("/findByNameCity/{name}")
-    public List<Airports> getByNameCity(@PathVariable("name") String name){
+    public List<Airports> getByNameCity(@PathVariable("name") String name) {
         return airportsDao.getByNameCity(name);
     }
 

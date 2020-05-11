@@ -3,6 +3,7 @@ package com.example.airlines.model;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Set;
 
 @Entity(name = "Flights")
 public class Flights {
@@ -13,7 +14,8 @@ public class Flights {
     private Airports airportsArrival;
     private Date departureDate;
     private Time departureTime;
-    private  String aircraftName;
+    private String aircraftName;
+    private Set<Accounts> accounts;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +56,28 @@ public class Flights {
         return aircraftName;
     }
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "Accounts_flights",
+            joinColumns = @JoinColumn(name = "Id_flight_account"),
+            inverseJoinColumns = @JoinColumn(name = "Id_account_flight")
+    )
+    public Set<Accounts> getAccounts() {
+        return accounts;
+    }
+
+    public void addAccount(Accounts account) {
+        accounts.add(account);
+    }
+
+    public void removeAccount(Accounts account) {
+        accounts.remove(account);
+    }
+
+    public void setAccounts(Set<Accounts> accounts) {
+        this.accounts = accounts;
+    }
+
     public void setIdFlight(int idFlight) {
         this.idFlight = idFlight;
     }
@@ -82,15 +106,15 @@ public class Flights {
         this.aircraftName = aircraftName;
     }
 
-    public String toString(){
-        return "Flight "+idFlight+":\n"+
-                "{\n"+
-                    "\tNumFlight: "+numFlight+"\n"+
-                    "\tAirportDeparture: "+airportsDeparture+"\n"+
-                    "\tAirportDeparture: "+airportsArrival+"\n"+
-                    "\tDate: "+departureDate+"\n"+
-                    "\tTime: "+departureTime+"\n"+
-                    "\tAircraft : "+aircraftName+"\n"+
+    public String toString() {
+        return "Flight " + idFlight + ":\n" +
+                "{\n" +
+                "\tNumFlight: " + numFlight + "\n" +
+                "\tAirportDeparture: " + airportsDeparture + "\n" +
+                "\tAirportDeparture: " + airportsArrival + "\n" +
+                "\tDate: " + departureDate + "\n" +
+                "\tTime: " + departureTime + "\n" +
+                "\tAircraft : " + aircraftName + "\n" +
                 "}\n";
     }
 }
