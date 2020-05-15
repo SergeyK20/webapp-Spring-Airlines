@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 @Transactional
 public interface FlightsDAO extends JpaRepository<Flights, Integer> {
-    List<Flights> findAll();
     java.util.Optional<Flights> findById(Integer Id);
     Flights save(Flights flight);
     void deleteById(Integer id);

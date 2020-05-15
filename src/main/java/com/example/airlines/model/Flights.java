@@ -92,8 +92,8 @@ public class Flights {
         return "Flight "+idFlight+":\n"+
                 "{\n"+
                     "\tNumFlight: "+numFlight+"\n"+
-                    "\tAirportDeparture: "+airportsDeparture+"\n"+
-                    "\tAirportDeparture: "+airportsArrival+"\n"+
+                    "\tAirportDeparture: "+airportsDeparture.getNameAirport()+"\n"+
+                    "\tAirportDeparture: "+airportsArrival.getNameAirport()+"\n"+
                     "\tDate: "+departureDate+"\n"+
                     "\tTime: "+departureTime+"\n"+
                     "\tAircraft : "+aircraftName+"\n"+

@@ -51,13 +51,13 @@ public class FlightsController {
     @PutMapping("/{Id}")
     public void updateFlight(@PathVariable("Id") int id, @RequestBody Flights flight){
         flightsDAO.findById(id).map(flights -> {
-                                flights.setNumFlight(flight.getNumFlight());
-                                flights.setAirportsDeparture(flight.getAirportsDeparture());
-                                flights.setAirportsArrival(flight.getAirportsArrival());
-                                flights.setDepartureDate(flight.getDepartureDate());
-                                flights.setDepartureTime(flight.getDepartureTime());
-                                flights.setAircraftName(flight.getAircraftName());
-                                return flightsDAO.save(flights);
+            flights.setNumFlight(flight.getNumFlight());
+            flights.setAirportsDeparture(flight.getAirportsDeparture());
+            flights.setAirportsArrival(flight.getAirportsArrival());
+            flights.setDepartureDate(flight.getDepartureDate());
+            flights.setDepartureTime(flight.getDepartureTime());
+            flights.setAircraftName(flight.getAircraftName());
+            return flightsDAO.save(flights);
         });
     }
 
