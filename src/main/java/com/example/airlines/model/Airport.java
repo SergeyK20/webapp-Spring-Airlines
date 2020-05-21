@@ -3,7 +3,7 @@ package com.example.airlines.model;
 import javax.persistence.*;
 
 @Entity(name = "Airports")
-public class Airports {
+public class Airport {
 
     private int idAirport;
     private String nameAirport;

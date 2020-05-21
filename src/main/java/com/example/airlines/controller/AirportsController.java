@@ -1,15 +1,17 @@
 package com.example.airlines.controller;
 
 import com.example.airlines.dao.AirportsDAO;
-import com.example.airlines.model.Airports;
+import com.example.airlines.model.Airport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/airports")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AirportsController {
     private AirportsDAO airportsDao;
 
@@ -19,22 +21,22 @@ public class AirportsController {
     }
 
     @GetMapping
-    public List<Airports> getAllAirports(){
+    public List<Airport> getAllAirports(){
         return airportsDao.findAll();
     }
 
     @GetMapping("/{Id}")
-    public java.util.Optional<Airports> getById(@PathVariable("Id") int id){
+    public java.util.Optional<Airport> getById(@PathVariable("Id") int id){
         return airportsDao.findById(id);
     }
 
     @GetMapping("/findByNameCity/{name}")
-    public List<Airports> getByNameCity(@PathVariable("name") String name) {
+    public List<Airport> getByNameCity(@PathVariable("name") String name) {
         return airportsDao.getByNameCity(name);
     }
 
     @PutMapping("/{Id}")
-    public void updateAirport(@PathVariable("Id") int id, @RequestBody Airports airport){
+    public void updateAirport(@PathVariable("Id") int id, @RequestBody Airport airport){
         airportsDao.findById(id).map(airports -> {
                                         airports.setNameAirport(airport.getNameAirport());
                                         airports.setAirportInTheCity(airport.getAirportInTheCity());
@@ -44,7 +46,7 @@ public class AirportsController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Airports saveAirport(@RequestBody Airports airport){
+    public Airport saveAirport(@RequestBody Airport airport){
         return airportsDao.save(airport);
     }
 

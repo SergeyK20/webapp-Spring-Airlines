@@ -2,15 +2,15 @@ package com.example.airlines.controller;
 
 import com.example.airlines.dao.AccessDAO;
 import com.example.airlines.model.Access;
-import com.example.airlines.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
 @RestController(value = "/access")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AccessController {
 
     private AccessDAO accessDAO;

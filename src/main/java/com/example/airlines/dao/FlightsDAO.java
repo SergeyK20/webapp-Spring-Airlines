@@ -1,6 +1,6 @@
 package com.example.airlines.dao;
 
-import com.example.airlines.model.Flights;
+import com.example.airlines.model.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,16 +9,16 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface FlightsDAO extends JpaRepository<Flights, Integer> {
+public interface FlightsDAO extends JpaRepository<Flight, Integer> {
 
     @Override
-    List<Flights> findAll();
+    List<Flight> findAll();
 
     @Override
-    java.util.Optional<Flights> findById(Integer Id);
+    java.util.Optional<Flight> findById(Integer Id);
 
     @Override
-    Flights save(Flights flight);
+    Flight save(Flight flight);
 
     @Override
     void deleteById(Integer id);

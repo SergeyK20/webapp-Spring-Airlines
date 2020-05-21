@@ -1,6 +1,6 @@
 package com.example.airlines.dao;
 
-import com.example.airlines.model.Accounts;
+import com.example.airlines.model.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +11,11 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public interface AccountsDAO extends JpaRepository<Accounts, Integer> {
+public interface AccountsDAO extends JpaRepository<Account, Integer> {
 
     @Override
-    List<Accounts> findAll();
+    List<Account> findAll();
 
     @Override
-    Optional<Accounts> findById(Integer integer);
+    Optional<Account> findById(Integer integer);
 }

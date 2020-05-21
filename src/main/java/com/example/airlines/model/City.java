@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 
 @Entity(name = "City")
+
 public class City {
     private int idCity;
     private String nameCity;

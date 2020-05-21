@@ -1,8 +1,8 @@
 package com.example.airlines.dto;
 
-import com.example.airlines.model.Accounts;
-import com.example.airlines.model.Airports;
-import com.example.airlines.model.Flights;
+import com.example.airlines.model.Account;
+import com.example.airlines.model.Airport;
+import com.example.airlines.model.Flight;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
@@ -16,15 +16,15 @@ import java.util.List;
 public class FlightsAdminDTO {
     private int idFlight;
     private String numFlight;
-    private Airports airportsDeparture;
-    private Airports airportsArrival;
+    private Airport airportDeparture;
+    private Airport airportArrival;
     private Date departureDate;
     private Time departureTime;
     private String aircraftName;
     private List<AccountAdminDTO> accounts;
 
     @Transactional
-    public List<FlightsAdminDTO> flightListToFlightsDTOList(List<Flights> flights) {
+    public List<FlightsAdminDTO> flightListToFlightsDTOList(List<Flight> flights) {
 
         if (flights == null) {
             return null;
@@ -32,11 +32,11 @@ public class FlightsAdminDTO {
 
         List<FlightsAdminDTO> flightsAdminDTO = new ArrayList<FlightsAdminDTO>();
 
-        for (Flights flight : flights) {
+        for (Flight flight : flights) {
             FlightsAdminDTO flightDTO = new FlightsAdminDTO();
             if (flight.getAccounts() != null) {
                 List<AccountAdminDTO> accountsDTO = new ArrayList<AccountAdminDTO>();
-                for (Accounts account : flight.getAccounts()) {
+                for (Account account : flight.getAccounts()) {
                     accountsDTO.add(addValueAccountsInFlightsDTO(account));
                 }
                 flightDTO = addValuesInFlightsDTO(flight, accountsDTO);
@@ -48,13 +48,13 @@ public class FlightsAdminDTO {
         return flightsAdminDTO;
     }
 
-    public FlightsAdminDTO flightToFlightsDTO(Flights flight) {
+    public FlightsAdminDTO flightToFlightsDTO(Flight flight) {
         if (flight == null) {
             return null;
         }
         if (flight.getAccounts() != null) {
             List<AccountAdminDTO> accountsDTO = new ArrayList<AccountAdminDTO>();
-            for (Accounts account : flight.getAccounts()) {
+            for (Account account : flight.getAccounts()) {
                 accountsDTO.add(addValueAccountsInFlightsDTO(account));
             }
             return addValuesInFlightsDTO(flight, accountsDTO);
@@ -62,7 +62,7 @@ public class FlightsAdminDTO {
         return addValuesInFlightsDTO(flight, null);
     }
 
-    private AccountAdminDTO addValueAccountsInFlightsDTO(Accounts account) {
+    private AccountAdminDTO addValueAccountsInFlightsDTO(Account account) {
         AccountAdminDTO accountAdminDTO = new AccountAdminDTO();
         accountAdminDTO.setIdAccount(account.getIdAccount());
         accountAdminDTO.setLogin(account.getLogin());
@@ -72,12 +72,12 @@ public class FlightsAdminDTO {
         return accountAdminDTO;
     }
 
-    private FlightsAdminDTO addValuesInFlightsDTO(Flights flight, List<AccountAdminDTO> accountsDTO) {
+    private FlightsAdminDTO addValuesInFlightsDTO(Flight flight, List<AccountAdminDTO> accountsDTO) {
         FlightsAdminDTO flightsAdminDTO = new FlightsAdminDTO();
         flightsAdminDTO.setIdFlight(flight.getIdFlight());
         flightsAdminDTO.setAircraftName(flight.getAircraftName());
-        flightsAdminDTO.setAirportsDeparture(flight.getAirportsDeparture());
-        flightsAdminDTO.setAirportsArrival(flight.getAirportsArrival());
+        flightsAdminDTO.setAirportDeparture(flight.getAirportDeparture());
+        flightsAdminDTO.setAirportArrival(flight.getAirportArrival());
         flightsAdminDTO.setNumFlight(flight.getNumFlight());
         flightsAdminDTO.setDepartureDate(flight.getDepartureDate());
         flightsAdminDTO.setDepartureTime(flight.getDepartureTime());
@@ -104,20 +104,20 @@ public class FlightsAdminDTO {
         this.numFlight = numFlight;
     }
 
-    public Airports getAirportsDeparture() {
-        return airportsDeparture;
+    public Airport getAirportDeparture() {
+        return airportDeparture;
     }
 
-    public void setAirportsDeparture(Airports airportsDeparture) {
-        this.airportsDeparture = airportsDeparture;
+    public void setAirportDeparture(Airport airportDeparture) {
+        this.airportDeparture = airportDeparture;
     }
 
-    public Airports getAirportsArrival() {
-        return airportsArrival;
+    public Airport getAirportArrival() {
+        return airportArrival;
     }
 
-    public void setAirportsArrival(Airports airportsArrival) {
-        this.airportsArrival = airportsArrival;
+    public void setAirportArrival(Airport airportArrival) {
+        this.airportArrival = airportArrival;
     }
 
     public Date getDepartureDate() {

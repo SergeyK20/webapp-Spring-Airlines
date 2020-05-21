@@ -1,21 +1,23 @@
 package com.example.airlines.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Set;
 
 @Entity(name = "Flights")
-public class Flights {
+public class Flight {
 
     private int idFlight;
     private String numFlight;
-    private Airports airportsDeparture;
-    private Airports airportsArrival;
+    private Airport airportDeparture;
+    private Airport airportArrival;
     private Date departureDate;
     private Time departureTime;
     private String aircraftName;
-    private Set<Accounts> accounts;
+    private Set<Account> accounts;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,36 +27,43 @@ public class Flights {
     }
 
     @Column(name = "Num_flight")
+    @NotNull
     public String getNumFlight() {
         return numFlight;
     }
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "Id_airport_of_departure")
-    public Airports getAirportsDeparture() {
-        return airportsDeparture;
+    @NotNull
+    public Airport getAirportDeparture() {
+        return airportDeparture;
     }
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "Id_airport_of_arrival")
-    public Airports getAirportsArrival() {
-        return airportsArrival;
+    @NotNull
+    public Airport getAirportArrival() {
+        return airportArrival;
     }
 
     @Column(name = "Departure_date")
+    @NotNull
     public Date getDepartureDate() {
         return departureDate;
     }
 
     @Column(name = "Departure_time")
+    @NotNull
     public Time getDepartureTime() {
         return departureTime;
     }
 
     @Column(name = "Aircraft_name")
+    @NotNull
     public String getAircraftName() {
         return aircraftName;
     }
+
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
@@ -62,19 +71,20 @@ public class Flights {
             joinColumns = @JoinColumn(name = "Id_flight_account"),
             inverseJoinColumns = @JoinColumn(name = "Id_account_flight")
     )
-    public Set<Accounts> getAccounts() {
+    @Size(max = 1)
+    public Set<Account> getAccounts() {
         return accounts;
     }
 
-    public void addAccount(Accounts account) {
+    public void addAccount(Account account) {
         accounts.add(account);
     }
 
-    public void removeAccount(Accounts account) {
+    public void removeAccount(Account account) {
         accounts.remove(account);
     }
 
-    public void setAccounts(Set<Accounts> accounts) {
+    public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
     }
 
@@ -86,12 +96,12 @@ public class Flights {
         this.numFlight = numFlight;
     }
 
-    public void setAirportsDeparture(Airports airportsDeparture) {
-        this.airportsDeparture = airportsDeparture;
+    public void setAirportDeparture(Airport airportDeparture) {
+        this.airportDeparture = airportDeparture;
     }
 
-    public void setAirportsArrival(Airports airportsArrival) {
-        this.airportsArrival = airportsArrival;
+    public void setAirportArrival(Airport airportArrival) {
+        this.airportArrival = airportArrival;
     }
 
     public void setDepartureDate(Date departureDate) {
@@ -110,8 +120,8 @@ public class Flights {
         return "Flight " + idFlight + ":\n" +
                 "{\n" +
                 "\tNumFlight: " + numFlight + "\n" +
-                "\tAirportDeparture: " + airportsDeparture + "\n" +
-                "\tAirportDeparture: " + airportsArrival + "\n" +
+                "\tAirportDeparture: " + airportDeparture + "\n" +
+                "\tAirportDeparture: " + airportArrival + "\n" +
                 "\tDate: " + departureDate + "\n" +
                 "\tTime: " + departureTime + "\n" +
                 "\tAircraft : " + aircraftName + "\n" +

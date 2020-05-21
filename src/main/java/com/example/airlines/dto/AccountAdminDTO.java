@@ -1,8 +1,8 @@
 package com.example.airlines.dto;
 
 import com.example.airlines.model.Access;
-import com.example.airlines.model.Accounts;
-import com.example.airlines.model.Flights;
+import com.example.airlines.model.Account;
+import com.example.airlines.model.Flight;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,23 +22,23 @@ public class AccountAdminDTO {
     private List<FlightClientDTO> flights;
 
     @Transactional
-    public List<AccountAdminDTO> accountToAccountDTO(List<Accounts> accounts) {
+    public List<AccountAdminDTO> accountToAccountDTO(List<Account> accounts) {
         if (accounts == null) {
             return null;
         }
 
         List<AccountAdminDTO> accountsDTO = new ArrayList<AccountAdminDTO>();
 
-        for (Accounts account : accounts) {
+        for (Account account : accounts) {
             AccountAdminDTO accountAdminDTO = new AccountAdminDTO();
             if (account.getFlights() != null) {
                 List<FlightClientDTO> flightsDTO = new ArrayList<FlightClientDTO>();
-                for (Flights flight : account.getFlights()) {
+                for (Flight flight : account.getFlights()) {
                     FlightClientDTO flightDTO = new FlightClientDTO();
                     flightDTO.setIdFlight(flight.getIdFlight());
                     flightDTO.setAircraftName(flight.getAircraftName());
-                    flightDTO.setAirportsDeparture(flight.getAirportsDeparture());
-                    flightDTO.setAirportsArrival(flight.getAirportsArrival());
+                    flightDTO.setAirportDeparture(flight.getAirportDeparture());
+                    flightDTO.setAirportArrival(flight.getAirportArrival());
                     flightDTO.setNumFlight(flight.getNumFlight());
                     flightDTO.setDepartureDate(flight.getDepartureDate());
                     flightDTO.setDepartureTime(flight.getDepartureTime());

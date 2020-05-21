@@ -1,6 +1,6 @@
 package com.example.airlines.dao;
 
-import com.example.airlines.model.Airports;
+import com.example.airlines.model.Airport;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,20 +11,20 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface AirportsDAO extends JpaRepository<Airports,Integer> {
+public interface AirportsDAO extends JpaRepository<Airport,Integer> {
 
     @Override
-    List<Airports> findAll();
+    List<Airport> findAll();
 
     @Override
-    java.util.Optional<Airports> findById(Integer id);
+    java.util.Optional<Airport> findById(Integer id);
 
     @Override
-    Airports save(Airports airport);
+    Airport save(Airport airport);
 
     @Override
     void deleteById(Integer id);
 
     @Query("Select A from Airports A where A.airportInTheCity.nameCity = :name")
-    List<Airports> getByNameCity(@Param("name") String name);
+    List<Airport> getByNameCity(@Param("name") String name);
 }

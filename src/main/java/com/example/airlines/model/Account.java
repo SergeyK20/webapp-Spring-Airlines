@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "Accounts")
-public class Accounts {
+public class Account {
 
     private int idAccount;
     private String login;
     private String passwordAccount;
     private String email;
     private Access access;
-    private List<Flights> flights;
+    private List<Flight> flights;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,21 +47,21 @@ public class Accounts {
             joinColumns = @JoinColumn(name = "Id_account_flight"),
             inverseJoinColumns = @JoinColumn(name = "Id_flight_account")
     )
-    public List<Flights> getFlights() {
+    public List<Flight> getFlights() {
         return flights;
     }
 
-    public void addFlight(Flights flight) {
+    public void addFlight(Flight flight) {
         flights.add(flight);
         flight.addAccount(this);
     }
 
-    public void removeFlight(Flights flight) {
+    public void removeFlight(Flight flight) {
         flights.remove(flight);
         flight.removeAccount(this);
     }
 
-    public void setFlights(List<Flights> flights) {
+    public void setFlights(List<Flight> flights) {
         this.flights = flights;
     }
 

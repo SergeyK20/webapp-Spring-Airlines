@@ -1,7 +1,7 @@
 package com.example.airlines.dto;
 
-import com.example.airlines.model.Airports;
-import com.example.airlines.model.Flights;
+import com.example.airlines.model.Airport;
+import com.example.airlines.model.Flight;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -14,8 +14,8 @@ import java.util.List;
 public class FlightClientDTO {
     private int idFlight;
     private String numFlight;
-    private Airports airportsDeparture;
-    private Airports airportsArrival;
+    private Airport airportDeparture;
+    private Airport airportArrival;
     private Date departureDate;
     private Time departureTime;
     private String aircraftName;
@@ -23,21 +23,21 @@ public class FlightClientDTO {
     public FlightClientDTO() {
     }
 
-    public List<FlightClientDTO> flightListToFlightClientDTOList(List<Flights> flights) {
+    public List<FlightClientDTO> flightListToFlightClientDTOList(List<Flight> flights) {
         if (flights == null) {
             return null;
         }
 
         List<FlightClientDTO> flightClientDTOS = new ArrayList<FlightClientDTO>();
 
-        for (Flights flight : flights) {
+        for (Flight flight : flights) {
 
             flightClientDTOS.add(addValuesInFlightClientDTO(flight));
         }
         return flightClientDTOS;
     }
 
-    public FlightClientDTO flightToFlightClientDTO(Flights flight) {
+    public FlightClientDTO flightToFlightClientDTO(Flight flight) {
         if (flight == null) {
             return null;
         }
@@ -45,12 +45,12 @@ public class FlightClientDTO {
     }
 
 
-    private FlightClientDTO addValuesInFlightClientDTO(Flights flight) {
+    private FlightClientDTO addValuesInFlightClientDTO(Flight flight) {
         FlightClientDTO flightClientDTO = new FlightClientDTO();
         flightClientDTO.setIdFlight(flight.getIdFlight());
         flightClientDTO.setAircraftName(flight.getAircraftName());
-        flightClientDTO.setAirportsDeparture(flight.getAirportsDeparture());
-        flightClientDTO.setAirportsArrival(flight.getAirportsArrival());
+        flightClientDTO.setAirportDeparture(flight.getAirportDeparture());
+        flightClientDTO.setAirportArrival(flight.getAirportArrival());
         flightClientDTO.setNumFlight(flight.getNumFlight());
         flightClientDTO.setDepartureDate(flight.getDepartureDate());
         flightClientDTO.setDepartureTime(flight.getDepartureTime());
@@ -73,20 +73,20 @@ public class FlightClientDTO {
         this.numFlight = numFlight;
     }
 
-    public Airports getAirportsDeparture() {
-        return airportsDeparture;
+    public Airport getAirportDeparture() {
+        return airportDeparture;
     }
 
-    public void setAirportsDeparture(Airports airportsDeparture) {
-        this.airportsDeparture = airportsDeparture;
+    public void setAirportDeparture(Airport airportDeparture) {
+        this.airportDeparture = airportDeparture;
     }
 
-    public Airports getAirportsArrival() {
-        return airportsArrival;
+    public Airport getAirportArrival() {
+        return airportArrival;
     }
 
-    public void setAirportsArrival(Airports airportsArrival) {
-        this.airportsArrival = airportsArrival;
+    public void setAirportArrival(Airport airportArrival) {
+        this.airportArrival = airportArrival;
     }
 
     public Date getDepartureDate() {
