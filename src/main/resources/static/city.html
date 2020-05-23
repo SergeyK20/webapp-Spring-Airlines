@@ -6,7 +6,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet"
           crossorigin="anonymous">
 </head>
-<body class="container-fluid" ng-app="CityController" ng-controller="CityCtrl" >
+<body class="container-fluid" ng-app="app" ng-controller="CityCtrl" >
 <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
     <li class="nav-item">
         <a class="nav-link" href="/">Booking</a>
@@ -23,40 +23,37 @@
     <a class="btn btn-outline-secondary" href="/logout">logout</a>
 </ul>
 <div class="container-fluid">
-    <form ng-submit="submitCity()">
-        <table border="0">
-            <tr>
-                <td>id City</td>
-                <td><input type="text" ng-model="citiesForm.idCity" /></td>
-            </tr>
-            <tr>
-                <td>nameCity</td>
-                <td><input type="text" ng-model="citiesForm.nameCity" /></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" value="Submit" class="blue-button" />
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
-    <div class="container-fluid" >
-    <table class="table-striped">
-    <thead>
-    <th>id  City </th>
-    <th>nameCity</th>
-    </thead>
-    <tbody class="table-bordered">
-    <tr ng-repeat="city in cities">
-        <td>{{city.idCity}}</td>
-        <td>{{city.nameCity}}</td>
+    <p style="color: green">{{message}}</p>
+    <p style="color: red">{{errorMessage}}</p>
+    <table>
+    <tr>
+        <td width="100">ID:</td>
+        <td><input type="text" id="id" ng-model="city.idCity" /></td>
     </tr>
-    </tbody>
+    <tr>
+        <td width="100">Name:</td>
+        <td><input type="text" id="name" ng-model="city.nameCity" /></td>
+    </tr>
+    </table>
+    <a ng-click="updateCity(city.idCity,city.nameCity)"class="btn btn-outline-secondary">Update City</a>
+    <a ng-click="addCity(city.nameCity)"class="btn btn-outline-success">Add City</a>
+    <a ng-click="deleteCity(city.idCity)"class="btn btn-outline-danger" >Delete City</a>
+</div>
+<div class="container-fluid" >
+    <table class="table-striped">
+        <thead>
+        <th>id  City </th>
+        <th>nameCity</th>
+        </thead>
+        <tbody class="table-bordered">
+        <tr ng-repeat="city in cities">
+            <td>{{city.idCity}}</td>
+            <td>{{city.nameCity}}</td>
+        </tr>
+        </tbody>
     </table>
 </div>
-<script  src="/js/city.js"></script>
 </body>
-<script type="text/javascript" src="js/components/angular.min.js"></script>
+<script type="text/javascript" src="js/components/angular.js"></script>
 <script type="text/javascript" src="js/components/city/city.js"></script>
 </html>

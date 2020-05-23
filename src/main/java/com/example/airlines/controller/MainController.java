@@ -28,9 +28,7 @@ public class MainController {
     @GetMapping
     public String main(Model model, @AuthenticationPrincipal User user) {
         HashMap<Object, Object> data = new HashMap<>();
-
-        data.put("profile", user);
-        data.put("cities", flightsDAO.findAll());
+        data.put("flights", user.getFlights());
 
         model.addAttribute("frontendData", data);
 

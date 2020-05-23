@@ -7,7 +7,6 @@
           crossorigin="anonymous">
 </head>
 <body class="container-fluid"ng-app="FlightsController" ng-controller="FlightsCtrl">
-<h3>Hello Flights</h3>
 
 <div>
     <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
@@ -30,7 +29,7 @@
     <table border="0">
         <tr>
             <td>idFlight</td>
-            <td>{{flightsForm.idFlight}}</td>
+            <td><input type="text" ng-model="flightsForm.idFlight" /></td>
         </tr>
         <tr>
             <td>numFlight</td>
@@ -38,11 +37,11 @@
         </tr>
         <tr>
             <td>airportsDeparture</td>
-            <td><input type="text" ng-model="flightsForm.airportsDeparture"  /></td>
+            <td><input type="text" ng-model="flightsForm.airportsDeparture.idAirport"  /></td>
         </tr>
         <tr>
             <td>airportsArrival</td>
-            <td><input type="text" ng-model="flightsForm.airportsArrival"  /></td>
+            <td><input type="text" ng-model="flightsForm.airportsArrival.idAirport"  /></td>
         </tr>
         <tr>
             <td>departureDate</td>
@@ -95,7 +94,7 @@
         </tbody>
     </table>
 </div>
-<script type="text/javascript" src="js/components/angular.min.js"></script>
+<script type="text/javascript" src="js/components/angular.js"></script>
 <script type="text/javascript" src="js/components/flight/flights.js"></script>
 </body>
 </html>

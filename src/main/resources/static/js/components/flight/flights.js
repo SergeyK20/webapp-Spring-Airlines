@@ -11,8 +11,8 @@ app.controller("FlightsCtrl", function($scope,$http){
         departureTime:"",
         aircraftName:""
     };
-    -_refreshAirportsData()
-    function _refreshAirportsData() {
+    -_refreshFlightsData()
+    function _refreshFlightsData() {
         $http({
             method: 'GET',
             url: '/flights'
@@ -28,12 +28,12 @@ app.controller("FlightsCtrl", function($scope,$http){
     $scope.submitFlight = function() {
         var method="";
         var url="";
-            if($scope.flightsForm ==-1){
+            if($scope.flightsForm.idFlight ==-1){
                 method("POST")
-                url='/flight'
+                url='/flights'
             }else {
                 method = "PUT";
-                url = '/flight';
+                url = '/flights';
             }
             $http({
                 method: method,
@@ -47,16 +47,18 @@ app.controller("FlightsCtrl", function($scope,$http){
 
     $scope.createFlight = function() {
         _clearFormData();
-    };
+    }
     $scope.deleteFlight = function(flight) {
         $http({
             method: 'DELETE',
-            url: '/flight' + flight.idFlight
-        }).then(_success, _error);
+            url: '/flights/' + flight.idFlight
+        })
     };
     $scope.editFlight = function(flight) {
         $scope.flightsForm.idFlight= flight.idFlight;
         $scope.flightsForm.numFlight = flight.numFlight;
+        $scope.flightsForm.airportsDeparture =flight.airportsDeparture;
+        $scope.flightsForm.airportsArrival =flight.airportsArrival;
         $scope.flightsForm.aircraftName= flight.aircraftName;
         $scope.flightsForm.departureTime= flight.departureTime;
         $scope.flightsForm.departureDate = flight.departureDate;

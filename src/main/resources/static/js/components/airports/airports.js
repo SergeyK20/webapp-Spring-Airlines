@@ -14,7 +14,7 @@ app.controller("AirportsCtrl", function($scope,$http){
             url: '/airports'
         }).then(
             function (res) { // success
-                $scope.airports = res.data;
+                $scope.airports = res.data
             },
             function (res) { // error
                 console.log("Error: " + res.status + " : " + res.data);
