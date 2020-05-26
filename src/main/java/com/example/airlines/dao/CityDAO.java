@@ -24,7 +24,7 @@ public interface CityDAO extends JpaRepository<City, Integer> {
     void deleteById(Integer id);
 
     @Modifying
-    @Query("update City c set c.nameCity = :city where c.idCity = :id ")
+    @Query("update City c set c.nameCity = :city where c.id = :id ")
     void update(@Param("city") String city, @Param("id") Integer id);
 
 }

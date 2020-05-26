@@ -2,28 +2,29 @@ package com.example.airlines.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Set;
 
-@Entity(name = "Flights")
+@Entity
+@Table(name = "Flight")
 public class Flight {
 
-    private int idFlight;
+    private int id;
     private String numFlight;
     private Airport airportDeparture;
     private Airport airportArrival;
     private Date departureDate;
     private Time departureTime;
-    private String aircraftName;
-    private Set<Account> accounts;
+    private Aircraft aircraft;
+    private double price;
+    private Set<UserFlight> accountUsers;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id_flight")
-    public int getIdFlight() {
-        return idFlight;
+    public int getId() {
+        return id;
     }
 
     @Column(name = "Num_flight")
@@ -32,14 +33,14 @@ public class Flight {
         return numFlight;
     }
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "Id_airport_of_departure")
     @NotNull
     public Airport getAirportDeparture() {
         return airportDeparture;
     }
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "Id_airport_of_arrival")
     @NotNull
     public Airport getAirportArrival() {
@@ -58,38 +59,37 @@ public class Flight {
         return departureTime;
     }
 
-    @Column(name = "Aircraft_name")
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "Id_aircraft")
+    public Aircraft getAircraft() {
+        return aircraft;
+    }
+
     @NotNull
-    public String getAircraftName() {
-        return aircraftName;
+    public double getPrice() {
+        return price;
+    }
+
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.MERGE, orphanRemoval = true)
+    public Set<UserFlight> getAccountUsers() {
+        return accountUsers;
+    }
+
+    public boolean addAccountUsers(UserFlight userFlight){
+        return accountUsers.add(userFlight);
+    }
+
+    public boolean deleteAccountUser(UserFlight userFlight){
+        return accountUsers.remove(userFlight);
     }
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(
-            name = "Accounts_flights",
-            joinColumns = @JoinColumn(name = "Id_flight_account"),
-            inverseJoinColumns = @JoinColumn(name = "Id_account_flight")
-    )
-    @Size(max = 1)
-    public Set<Account> getAccounts() {
-        return accounts;
+    public void setAccountUsers(Set<UserFlight> accountUsers) {
+        this.accountUsers = accountUsers;
     }
 
-    public void addAccount(Account account) {
-        accounts.add(account);
-    }
-
-    public void removeAccount(Account account) {
-        accounts.remove(account);
-    }
-
-    public void setAccounts(Set<Account> accounts) {
-        this.accounts = accounts;
-    }
-
-    public void setIdFlight(int idFlight) {
-        this.idFlight = idFlight;
+    public void setId(int idFlight) {
+        this.id = idFlight;
     }
 
     public void setNumFlight(String numFlight) {
@@ -112,19 +112,11 @@ public class Flight {
         this.departureTime = departureTime;
     }
 
-    public void setAircraftName(String aircraftName) {
-        this.aircraftName = aircraftName;
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
     }
 
-    public String toString() {
-        return "Flight " + idFlight + ":\n" +
-                "{\n" +
-                "\tNumFlight: " + numFlight + "\n" +
-                "\tAirportDeparture: " + airportDeparture + "\n" +
-                "\tAirportDeparture: " + airportArrival + "\n" +
-                "\tDate: " + departureDate + "\n" +
-                "\tTime: " + departureTime + "\n" +
-                "\tAircraft : " + aircraftName + "\n" +
-                "}\n";
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet"
+          crossorigin="anonymous">
+</head>
+<body class="container-fluid"ng-app="FlightsController" ng-controller="FlightsCtrl">
+<h3>Hello Flights</h3>
+
+<div>
+    <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link " href="/">Booking</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/flights.html">Flights</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/airports.html">Airports</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/city.html">City</a>
+        </li>
+        <a class="btn btn-outline-secondary" href="/logout">logout</a>
+    </ul>
+</div>
+<form ng-submit="submitFlight()">
+    <table border="0">
+        <tr>
+            <td>idFlight</td>
+            <td>{{flightsForm.idFlight}}</td>
+        </tr>
+        <tr>
+            <td>numFlight</td>
+            <td><input type="text" ng-model="flightsForm.numFlight" /></td>
+        </tr>
+        <tr>
+            <td>airportsDeparture</td>
+            <td><input type="text" ng-model="flightsForm.airportsDeparture"  /></td>
+        </tr>
+        <tr>
+            <td>airportsArrival</td>
+            <td><input type="text" ng-model="flightsForm.airportsArrival"  /></td>
+        </tr>
+        <tr>
+            <td>departureDate</td>
+            <td><input type="text" ng-model="flightsForm.departureDate"  /></td>
+        </tr>
+        <tr>
+            <td>departureTime</td>
+            <td><input type="text" ng-model="flightsForm.departureTime"  /></td>
+        </tr>
+        <tr>
+            <td>aircraftName</td>
+            <td><input type="text" ng-model="flightsForm.aircraftName"  /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Submit" class="blue-button" />
+            </td>
+        </tr>
+    </table>
+</form>
+<div >
+    <table class="table-striped container-fluid" align="center">
+        <thead>
+        <th>id</th>
+        <th>numFlight</th>
+        <th>Airport depart</th>
+        <th>Airport arrival</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Name</th>
+        <th></th>
+        <th></th>
+        </thead>
+        <tbody class="table-bordered">
+        <tr ng-repeat="flight in flights">
+            <td>{{flight.idFlight}}</td>
+            <td>{{flight.numFlight}}</td>
+            <td>{{flight.airportsDeparture.nameAirport}}</td>
+            <td>{{flight.airportsArrival.nameAirport}}</td>
+            <td>{{flight.departureDate}}</td>
+            <td>{{flight.departureTime}}</td>
+            <td>{{flight.aircraftName}}</td>
+            <td>
+                <a ng-click="editFlight(flight)" class="btn-outline-secondary">Edit</a>
+            </td>
+            <td>
+                <a ng-click="deleteFlight(flight)" class="btn-outline-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript" src="js/components/angular.min.js"></script>
+<script type="text/javascript" src="js/components/flight/flights.js"></script>
+</body>
+</html>

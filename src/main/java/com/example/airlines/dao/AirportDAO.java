@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface AirportsDAO extends JpaRepository<Airport,Integer> {
+public interface AirportDAO extends JpaRepository<Airport, Integer> {
 
     @Override
     List<Airport> findAll();
@@ -25,6 +25,6 @@ public interface AirportsDAO extends JpaRepository<Airport,Integer> {
     @Override
     void deleteById(Integer id);
 
-    @Query("Select A from Airports A where A.airportInTheCity.nameCity = :name")
+    @Query("Select A from Airport A where A.airportInTheCity.nameCity = :name")
     List<Airport> getByNameCity(@Param("name") String name);
 }

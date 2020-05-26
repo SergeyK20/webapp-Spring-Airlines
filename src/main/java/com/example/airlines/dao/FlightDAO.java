@@ -2,6 +2,8 @@ package com.example.airlines.dao;
 
 import com.example.airlines.model.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface FlightsDAO extends JpaRepository<Flight, Integer> {
+public interface FlightDAO extends JpaRepository<Flight, Integer> {
 
     @Override
     List<Flight> findAll();
@@ -22,4 +24,12 @@ public interface FlightsDAO extends JpaRepository<Flight, Integer> {
 
     @Override
     void deleteById(Integer id);
+
+    @Query("Select f from Flight f where f.airportArrival.airportInTheCity.nameCity = :city")
+    List<Flight> findByCityArrival(@Param("city") String city);
+
+    @Query("Select f from Flight f where f.airportDeparture.airportInTheCity.nameCity = :city")
+    List<Flight> findByCityDeparture(@Param("city") String city);
+
+
 }
