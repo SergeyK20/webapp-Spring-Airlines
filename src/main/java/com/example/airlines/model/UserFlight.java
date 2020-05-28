@@ -11,6 +11,7 @@ public class UserFlight {
     private int id;
     private AccountUser user;
     private Flight flight;
+    private boolean payment;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +31,15 @@ public class UserFlight {
     @NotNull
     public Flight getFlight() {
         return flight;
+    }
+
+    @NotNull
+    public boolean isPayment() {
+        return payment;
+    }
+
+    public void setPayment(boolean payment) {
+        this.payment = payment;
     }
 
     public void setId(int idUserFlight) {

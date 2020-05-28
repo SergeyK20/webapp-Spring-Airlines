@@ -3,11 +3,12 @@ package com.example.airlines.dto;
 /**
  * Класс хранящий в себе значение id, для борирования рейса
  */
-public class UserFlightIdDTO {
+public class UserFlightIdAndPaymentDTO {
     private int idUser;
     private int idFlight;
+    private boolean payment;
 
-    public UserFlightIdDTO() {
+    public UserFlightIdAndPaymentDTO() {
     }
 
     public int getIdUser() {
@@ -24,5 +25,13 @@ public class UserFlightIdDTO {
 
     public void setIdFlight(int idFlight) {
         this.idFlight = idFlight;
+    }
+
+    public boolean isPayment() {
+        return payment;
+    }
+
+    public void setPayment(boolean payment) {
+        this.payment = payment;
     }
 }

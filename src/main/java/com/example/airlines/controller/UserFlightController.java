@@ -4,7 +4,7 @@ import com.example.airlines.dao.AccountUserDAO;
 import com.example.airlines.dao.FlightDAO;
 import com.example.airlines.dao.UserFlightDAO;
 import com.example.airlines.dto.UserFlightDTO;
-import com.example.airlines.dto.UserFlightIdDTO;
+import com.example.airlines.dto.UserFlightIdAndPaymentDTO;
 import com.example.airlines.model.AccountUser;
 import com.example.airlines.model.Flight;
 import com.example.airlines.model.UserFlight;
@@ -46,16 +46,17 @@ public class UserFlightController {
     }
 
     @PostMapping("/booking")
-    public UserFlightDTO saveUserFlight(@RequestBody UserFlightIdDTO id) {
+    public UserFlightDTO saveUserFlight(@RequestBody UserFlightIdAndPaymentDTO element) {
         UserFlightDTO userFlightDTO = new UserFlightDTO();
         UserFlight userFlight = new UserFlight();
-        if (!flightDAO.findById(id.getIdFlight()).isPresent() || !accountUserDAO.findById(id.getIdUser()).isPresent()) {
+        if (!flightDAO.findById(element.getIdFlight()).isPresent() || !accountUserDAO.findById(element.getIdUser()).isPresent()) {
             return null;
         } else {
-            Flight flight = flightDAO.findById(id.getIdFlight()).get();
-            AccountUser accountUser = accountUserDAO.findById(id.getIdUser()).get();
+            Flight flight = flightDAO.findById(element.getIdFlight()).get();
+            AccountUser accountUser = accountUserDAO.findById(element.getIdUser()).get();
             userFlight.setUser(accountUser);
             userFlight.setFlight(flight);
+            userFlight.setPayment(element.isPayment());
             if (flight.getAccountUsers().size() < flight.getAircraft().getNumberSeatsAircraft()) {
                 return userFlightDTO.userFlightInUserFlightDTO(userFlightDAO.save(userFlight));
             } else {

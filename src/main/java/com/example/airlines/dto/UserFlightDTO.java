@@ -12,6 +12,7 @@ import java.util.List;
 public class UserFlightDTO {
     private FlightRoleUserDTO flightRoleUserDTO;
     private AccountRoleUserDTO accountRoleUserDTO;
+    private boolean payment;
 
     public UserFlightDTO() {
         flightRoleUserDTO = new FlightRoleUserDTO();
@@ -36,6 +37,7 @@ public class UserFlightDTO {
         UserFlightDTO userFlightDTO = new UserFlightDTO();
         userFlightDTO.setFlightRoleUserDTO(flightRoleUserDTO.flightToFlightClientDTO(element.getFlight()));
         userFlightDTO.setAccountRoleUserDTO(accountRoleUserDTO.accountUserToAccountDTO(element.getUser()));
+        userFlightDTO.setPayment(element.isPayment());
         return userFlightDTO;
     }
 
@@ -54,5 +56,13 @@ public class UserFlightDTO {
 
     public void setAccountRoleUserDTO(AccountRoleUserDTO accountRoleUserDTO) {
         this.accountRoleUserDTO = accountRoleUserDTO;
+    }
+
+    public boolean isPayment() {
+        return payment;
+    }
+
+    public void setPayment(boolean payment) {
+        this.payment = payment;
     }
 }
