@@ -4,12 +4,14 @@ import com.example.airlines.dao.AircraftDAO;
 import com.example.airlines.dto.AircraftDTO;
 import com.example.airlines.model.Aircraft;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/aircraft")
+@PreAuthorize("hasRole('ADMIN')")
 public class AircraftController {
 
     private AircraftDAO aircraftDAO;

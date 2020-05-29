@@ -3,11 +3,13 @@ package com.example.airlines.controller;
 import com.example.airlines.dao.AircraftDAO;
 import com.example.airlines.dao.AirportDAO;
 import com.example.airlines.dao.FlightDAO;
+import com.example.airlines.dao.UserFlightDAO;
 import com.example.airlines.dto.FlightRoleUserDTO;
 import com.example.airlines.model.Flight;
 import com.example.airlines.model.UserFlight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,19 +22,23 @@ public class FlightController {
     private FlightDAO flightDAO;
     private AirportDAO airportDAO;
     private AircraftDAO aircraftDAO;
+    private UserFlightDAO userFlightDAO;
 
     @Autowired
-    public FlightController(FlightDAO flightDAO, AirportDAO airportDAO, AircraftDAO aircraftDAO) {
+    public FlightController(FlightDAO flightDAO, AirportDAO airportDAO, AircraftDAO aircraftDAO, UserFlightDAO userFlightDAO) {
         this.airportDAO = airportDAO;
         this.flightDAO = flightDAO;
         this.aircraftDAO = aircraftDAO;
+        this.userFlightDAO = userFlightDAO;
     }
 
     /**
      * @return возвращает список рейсов без аккаунтов
      */
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public List<FlightRoleUserDTO> getAllCityClient() {
+
         FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
         return flightsDTO.flightListToFlightClientDTOList(flightDAO.findAll());
     }
@@ -42,6 +48,7 @@ public class FlightController {
      * @return возвращает рейс без аккаунта по id
      */
     @GetMapping("/Id/{Id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public FlightRoleUserDTO findFlight(@PathVariable("Id") int id) {
         FlightRoleUserDTO flightRoleUserDTO = new FlightRoleUserDTO();
         if (!flightDAO.findById(id).isPresent()) {
@@ -55,6 +62,7 @@ public class FlightController {
      * Фильтрация по городам прибытия
      */
     @GetMapping("/City_arrival/{City}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public List<FlightRoleUserDTO> findFlightByCityArrival(@PathVariable("City") String city) {
         FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
         return flightsDTO.flightListToFlightClientDTOList(flightDAO.findByCityArrival(city));
@@ -64,6 +72,7 @@ public class FlightController {
      * Фильтрация по городам отбытия
      */
     @GetMapping("/City_departure/{City}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public List<FlightRoleUserDTO> findFlightByCityDeparture(@PathVariable("City") String city) {
         FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
         return flightsDTO.flightListToFlightClientDTOList(flightDAO.findByCityDeparture(city));
@@ -88,6 +97,7 @@ public class FlightController {
      */
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public FlightRoleUserDTO saveFlight(@Valid @RequestBody Flight flightBeta) {
         FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
         Flight flight = setFlight(flightBeta);
@@ -117,6 +127,7 @@ public class FlightController {
      *                   }
      */
     @PutMapping("/{Id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateFlight(@PathVariable("Id") int id, @RequestBody @Valid Flight flightBeta) {
         flightDAO.findById(id).map(flight -> {
             flightBeta.setId(id);
@@ -166,7 +177,9 @@ public class FlightController {
 
     }
 
+
     @DeleteMapping("/{Id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteFlight(@PathVariable("Id") int id) {
         flightDAO.deleteById(id);
     }

@@ -49,7 +49,10 @@ public class FlightRoleUserDTO {
     public FlightRoleUserDTO addValuesInFlightClientDTO(Flight flight) {
         FlightRoleUserDTO flightRoleUserDTO = new FlightRoleUserDTO();
         flightRoleUserDTO.setIdFlight(flight.getId());
-        flightRoleUserDTO.setAircraft(new AircraftDTO().aircraftInAircraftDTO(flight.getAircraft()));
+        AircraftDTO aircraftDTO = new AircraftDTO(flight.getAircraft().getId(),
+                                                  flight.getAircraft().getNameAircraft(),
+                                flight.getAircraft().getNumberSeatsAircraft() - flight.getAccountUsers().size());
+        flightRoleUserDTO.setAircraft(aircraftDTO);
         flightRoleUserDTO.setAirportDeparture(new AirportDTO().airportInAirportDTO(flight.getAirportDeparture()));
         flightRoleUserDTO.setAirportArrival(new AirportDTO().airportInAirportDTO(flight.getAirportArrival()));
         flightRoleUserDTO.setNumFlight(flight.getNumFlight());

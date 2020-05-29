@@ -16,6 +16,12 @@ public class AircraftDTO {
     public AircraftDTO() {
     }
 
+    public AircraftDTO(int id, String nameAircraft, int numberSeatsAircraft) {
+        this.id = id;
+        this.nameAircraft = nameAircraft;
+        this.numberSeatsAircraft = numberSeatsAircraft;
+    }
+
     public List<AircraftDTO> aircraftListInAircraftDTOList(List<Aircraft> aircraftList){
         if(aircraftList == null){
             return null;

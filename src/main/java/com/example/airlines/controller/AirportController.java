@@ -6,12 +6,14 @@ import com.example.airlines.dto.AirportDTO;
 import com.example.airlines.model.Airport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/airports")
+@PreAuthorize("hasRole('ADMIN')")
 public class AirportController {
 
     private AirportDAO airportDao;

@@ -5,12 +5,14 @@ import com.example.airlines.dto.CityDTO;
 import com.example.airlines.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/city")
+@PreAuthorize("hasRole('ADMIN')")
 public class CityController {
 
     private CityDAO cityDAO;

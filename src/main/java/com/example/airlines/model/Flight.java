@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 @Entity
@@ -14,8 +16,8 @@ public class Flight {
     private String numFlight;
     private Airport airportDeparture;
     private Airport airportArrival;
-    private Date departureDate;
-    private Time departureTime;
+    private LocalDate departureDate;
+    private LocalTime departureTime;
     private Aircraft aircraft;
     private double price;
     private Set<UserFlight> accountUsers;
@@ -49,13 +51,15 @@ public class Flight {
 
     @Column(name = "Departure_date")
     @NotNull
-    public Date getDepartureDate() {
+    @Temporal(TemporalType.DATE)
+    public LocalDate getDepartureDate() {
         return departureDate;
     }
 
     @Column(name = "Departure_time")
     @NotNull
-    public Time getDepartureTime() {
+    @Temporal(TemporalType.TIME)
+    public LocalTime getDepartureTime() {
         return departureTime;
     }
 
@@ -104,11 +108,11 @@ public class Flight {
         this.airportArrival = airportArrival;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(LocalDate departureDate) {
         this.departureDate = departureDate;
     }
 
-    public void setDepartureTime(Time departureTime) {
+    public void setDepartureTime(LocalTime departureTime) {
         this.departureTime = departureTime;
     }
 
