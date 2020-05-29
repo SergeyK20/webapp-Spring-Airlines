@@ -4,7 +4,6 @@ import com.example.airlines.dao.CityDAO;
 import com.example.airlines.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/city")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class CityController {
 
     private CityDAO cityDAO;
@@ -33,11 +31,12 @@ public class CityController {
     }
 
     @PostMapping
-    public City createCity(@RequestBody City city){
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public City saveCity(@RequestBody City city){
         return cityDAO.save(city);
     }
 
-    @PutMapping("/city")
+    @PutMapping("/{Id}")
     public void updateCity(@PathVariable("Id") int id, @RequestBody City city){
         cityDAO.findById(id).map(city1 ->{
                                 city1.setNameCity(city.getNameCity());
@@ -46,7 +45,7 @@ public class CityController {
     }
 
     @DeleteMapping("/{Id}")
-    public void deleteCity(@PathVariable("Id") City city){
-        cityDAO.delete(city);
+    public void deleteCity(@PathVariable("Id") int id){
+        cityDAO.deleteById(id);
     }
 }

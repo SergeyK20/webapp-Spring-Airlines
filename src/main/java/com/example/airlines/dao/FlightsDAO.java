@@ -1,15 +1,22 @@
 package com.example.airlines.dao;
 
+import com.example.airlines.model.City;
 import com.example.airlines.model.Flights;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @Repository
 @Transactional
 public interface FlightsDAO extends JpaRepository<Flights, Integer> {
+    List<Flights> findAll();
     java.util.Optional<Flights> findById(Integer Id);
     Flights save(Flights flight);
     void deleteById(Integer id);

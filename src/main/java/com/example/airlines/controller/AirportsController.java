@@ -1,17 +1,17 @@
 package com.example.airlines.controller;
 
 import com.example.airlines.dao.AirportsDAO;
+import com.example.airlines.dao.CityDAO;
 import com.example.airlines.model.Airports;
+import com.example.airlines.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/airports")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class AirportsController {
     private AirportsDAO airportsDao;
 

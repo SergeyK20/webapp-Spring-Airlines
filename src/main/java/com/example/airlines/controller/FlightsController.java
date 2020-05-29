@@ -1,11 +1,15 @@
 package com.example.airlines.controller;
 
+import com.example.airlines.dao.CityDAO;
 import com.example.airlines.dao.FlightsDAO;
+import com.example.airlines.model.City;
 import com.example.airlines.model.Flights;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,13 +55,13 @@ public class FlightsController {
     @PutMapping("/{Id}")
     public void updateFlight(@PathVariable("Id") int id, @RequestBody Flights flight){
         flightsDAO.findById(id).map(flights -> {
-            flights.setNumFlight(flight.getNumFlight());
-            flights.setAirportsDeparture(flight.getAirportsDeparture());
-            flights.setAirportsArrival(flight.getAirportsArrival());
-            flights.setDepartureDate(flight.getDepartureDate());
-            flights.setDepartureTime(flight.getDepartureTime());
-            flights.setAircraftName(flight.getAircraftName());
-            return flightsDAO.save(flights);
+                                flights.setNumFlight(flight.getNumFlight());
+                                flights.setAirportsDeparture(flight.getAirportsDeparture());
+                                flights.setAirportsArrival(flight.getAirportsArrival());
+                                flights.setDepartureDate(flight.getDepartureDate());
+                                flights.setDepartureTime(flight.getDepartureTime());
+                                flights.setAircraftName(flight.getAircraftName());
+                                return flightsDAO.save(flights);
         });
     }
 

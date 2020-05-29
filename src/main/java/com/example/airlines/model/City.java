@@ -7,20 +7,18 @@ import java.util.List;
 
 @Entity(name = "City")
 public class City {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id_city")
     private int idCity;
-    @Column(name = "Name_city")
     private String nameCity;
     /*private List<Airports> listAirports = new ArrayList<Airports>();*/
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id_city")
     public int getIdCity() {
         return idCity;
     }
 
-
+    @Column(name = "Name_city")
     public String getNameCity() {
         return nameCity;
     }
