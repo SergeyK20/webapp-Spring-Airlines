@@ -1,14 +1,33 @@
-var app = angular.module("AirportsController",[])
+var app = angular.module("Airports",[])
 
-app.controller("AirportsCtrl", function($scope,$http){
+app.controller("AirportsCtrl", function($scope,$http,AirportService){
     $scope.airports=[];
-    $scope.airportForm={
-        idAirport: 1,
-        nameAirport:"",
+    $scope.airport={
+        id: 1,
+        nameAirport:"Kurumoch",
         airportInTheCity:"2"
     };
-    -_refreshAirportsData()
-    function _refreshAirportsData() {
+    $scope.cities=[];
+    $scope.city={
+        id: 1,
+        nameCity:"hello"
+    };
+    AirportsData()
+    _refreshCityData()
+    function _refreshCityData() {
+        $http({
+            method: 'GET',
+            url: '/city'
+        }).then(
+            function (res) { // success
+                $scope.cities = res.data;
+            },
+            function (res) { // error
+                console.log("Error: " + res.status + " : " + res.data);
+            }
+        );
+    };
+    function AirportsData() {
         $http({
             method: 'GET',
             url: '/airports'
@@ -21,52 +40,111 @@ app.controller("AirportsCtrl", function($scope,$http){
             }
         );
     };
-    $scope.submitAirport = function() {
-        var method="";
-        var url="";if($scope.airportForm ==-1){
-            method("POST")
-            url='/airports'
-        }else {
-            method = "PUT";
-            url = '/airports';
+    $scope.updateAirport = function () {
+        AirportService.updateAirport($scope.airport.nameAirport,$scope.airport.airportInTheCity)
+            .then(function success(response){
+                    $scope.message = 'Airport data updated!';
+                    $scope.errorMessage = '';
+                },
+                function error(response){
+                    $scope.errorMessage = 'Error updating airport!';
+                    $scope.message = '';
+                });
+        AirportsData();
+    }
+
+    $scope.getAirport = function () {
+        var id = $scope.airport.id;
+        AirportService.getAirport($scope.airport.id)
+            .then(function success(response) {
+                    $scope.airport = response.data;
+                    $scope.airport.id = id;
+                    $scope.message = '';
+                    $scope.errorMessage = '';
+                },
+                function error(response) {
+                    $scope.message = '';
+                    if (response.status === 404) {
+                        $scope.errorMessage = 'Airport not found!';
+                    } else {
+                        $scope.errorMessage = "Error getting airport!";
+                    }
+                });
+        AirportsData();
+    }
+
+    $scope.addAirport = function () {
+        if ($scope.airport != null ) {
+            AirportService.addAirport($scope.airport.nameAirport, $scope.airport.airportInTheCity)
+                .then (function success(response){
+                        $scope.message = 'Airport added!';
+                        $scope.errorMessage = '';
+                    },
+                    function error(response){
+                        $scope.errorMessage = 'Error adding airport!';
+                        $scope.message = '';
+                    });
         }
-        $http({
-            method: method,
-            url: url,
-            data: angular.toJson($scope.airportForm),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(_success, _error);
-    };
-
-    $scope.createFlight = function() {
-        _clearFormData();
-    };
-    $scope.deleteFlight = function(airport) {
-        $http({
-            method: 'DELETE',
-            url: '/airports' + airport.idAirport
-        }).then(_success, _error);
-    };
-    $scope.editFlight = function(airport) {
-        $scope.airportForm.idAirport= airport.idAirport;
-        $scope.airportForm.nameAirport = airport.nameAirport;
-        $scope.airportForm.airportInTheCity= airport.airportInTheCity;
-
-    };
-    function _success(res) {
-        _refreshEmployeeData();
-        _clearFormData();
+        else {
+            $scope.errorMessage = 'Please enter a name!';
+            $scope.message = '';
+        }
+        AirportsData();
     }
 
-    function _error(res) {
-        var data = res.data;
-        var status = res.status;
-        var header = res.header;
-        var config = res.config;
-        alert("Error: " + status + ":" + data);
+    $scope.deleteAirport = function () {
+        AirportService.deleteAirport($scope.airport.id)
+            .then (function success(response){
+                    $scope.message = 'Airport deleted!';
+                    $scope.airport = null;
+                    $scope.errorMessage='';
+                },
+                function error(response){
+                    $scope.errorMessage = 'Error deleting airport!';
+                    $scope.message='';
+                })
+        AirportsData();
     }
-
 
 })
+app.service('AirportService',['$http', function ($http) {
+
+    this.getAirport = function getAirport(id){
+        return $http({
+            method: 'GET',
+            url: '/airports/'+id
+        });
+    }
+
+    this.addAirport = function addAirport(nameAirport,airportinTheCity){
+        return $http({
+            method: 'POST',
+            url: '/airports',
+            data: {nameAirport:nameAirport,
+                    airportInTheCity:airportinTheCity}
+        });
+    }
+
+    this.deleteAirport = function deleteAirport(id){
+        return $http({
+            method: 'DELETE',
+            url: '/airports/'+id
+        })
+    }
+
+    this.updateAirport = function updateAirport(id,nameAirport, airportInTheCity){
+        return $http({
+            method: 'PUT',
+            url: '/airports/'+id,
+            data: {nameAirport:nameAirport,
+                airportInTheCity:airportInTheCity}
+        })
+    }
+    this.getAirport = function getAirport(id) {
+        return $http({
+            method: 'GET',
+            url: '/airports/' + id
+        });
+    }
+
+}]);

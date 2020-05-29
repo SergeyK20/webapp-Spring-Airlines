@@ -1,8 +1,8 @@
 package com.example.airlines.controller;
 
-import com.example.airlines.dao.FlightsDAO;
-import com.example.airlines.model.Flights;
-import com.example.airlines.model.User;
+
+import com.example.airlines.dao.FlightDAO;
+import com.example.airlines.model.AccountUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -11,24 +11,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
-    private FlightsDAO flightsDAO;
+    private FlightDAO flightsDAO;
 
     @Autowired
-    public MainController (FlightsDAO flightsDAO){
-        this.flightsDAO=flightsDAO;
+    public MainController(FlightDAO flightsDAO) {
+        this.flightsDAO = flightsDAO;
     }
 
     private String profile;
 
     @GetMapping
-    public String main(Model model, @AuthenticationPrincipal User user) {
+    public String main(Model model, @AuthenticationPrincipal AccountUser user) {
         HashMap<Object, Object> data = new HashMap<>();
-        data.put("flights", user.getFlights());
+
+        data.put("profile", user);
+        data.put("cities", flightsDAO.findAll());
 
         model.addAttribute("frontendData", data);
 

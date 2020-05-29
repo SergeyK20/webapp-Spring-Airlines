@@ -1,8 +1,10 @@
 package com.example.airlines.controller;
 
-import com.example.airlines.dao.UserDAO;
+
+import com.example.airlines.dao.AccountUserDAO;
+import com.example.airlines.model.AccountUser;
 import com.example.airlines.model.Role;
-import com.example.airlines.model.User;
+import com.example.airlines.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +15,11 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
+
     @Autowired
-    private UserDAO userDAO;
+    private AccountUserDAO accountUserDAO;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/registration")
     public String registration() {
@@ -22,8 +27,9 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Map<String, Object> model) {
-        User userFromDb = userDAO.findByUsername(user.getUsername());
+    public String addUser(AccountUser user, Map<String, Object> model) {
+        AccountUser userFromDb = accountUserDAO.findByLogin(user.getUsername());
+
 
         if (userFromDb != null) {
             model.put("message", "User exists!");
@@ -32,7 +38,7 @@ public class RegistrationController {
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
-        userDAO.save(user);
+        userService.save(user);
 
         return "redirect:/login";
     }

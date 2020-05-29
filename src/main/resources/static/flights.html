@@ -1,69 +1,98 @@
 <!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet"
           crossorigin="anonymous">
 </head>
-<body class="container-fluid"ng-app="FlightsController" ng-controller="FlightsCtrl">
+<body class="container-fluid" ng-app="FlightsController" ng-controller="FlightsCtrl">
 
-<div>
-    <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
+<div sec:authorize="hasAuthority('ADMIN')">
+    <ul class="nav nav-pills  nav-tabs">
         <li class="nav-item">
-            <a class="nav-link " href="/">Booking</a>
+            <a class="nav-link active" href="/">Booking</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="/flights.html">Flights</a>
+            <a class="nav-link" href="/flights.html">Flights</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/airports.html">Airports</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="/user.html">User</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="/city.html">City</a>
         </li>
         <a class="btn btn-outline-secondary" href="/logout">logout</a>
+        <h3 sec:authentication="name" align="left">name</h3>
     </ul>
 </div>
-<form ng-submit="submitFlight()">
-    <table border="0">
-        <tr>
-            <td>idFlight</td>
-            <td><input type="text" ng-model="flightsForm.idFlight" /></td>
-        </tr>
-        <tr>
-            <td>numFlight</td>
-            <td><input type="text" ng-model="flightsForm.numFlight" /></td>
-        </tr>
-        <tr>
-            <td>airportsDeparture</td>
-            <td><input type="text" ng-model="flightsForm.airportsDeparture.idAirport"  /></td>
-        </tr>
-        <tr>
-            <td>airportsArrival</td>
-            <td><input type="text" ng-model="flightsForm.airportsArrival.idAirport"  /></td>
-        </tr>
-        <tr>
-            <td>departureDate</td>
-            <td><input type="text" ng-model="flightsForm.departureDate"  /></td>
-        </tr>
-        <tr>
-            <td>departureTime</td>
-            <td><input type="text" ng-model="flightsForm.departureTime"  /></td>
-        </tr>
-        <tr>
-            <td>aircraftName</td>
-            <td><input type="text" ng-model="flightsForm.aircraftName"  /></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="Submit" class="blue-button" />
-            </td>
-        </tr>
-    </table>
-</form>
-<div >
-    <table class="table-striped container-fluid" align="center">
+<div class="container">
+    <div class="container" align="center">
+        <p style="color: green">{{message}}</p>
+        <p style="color: red">{{errorMessage}}</p>
+        <table>
+            <tr>
+                <td width="100">ID:</td>
+                <td><input type="text" id="id" ng-model="flight.id"/></td>
+            </tr>
+            <tr>
+                <td width="100">Name Airport:</td>
+                <td><input type="text" id="numFlight" ng-model="flight.numFlight"/></td>
+            </tr>
+            <tr>
+                <td>airportDeparture</td>
+                <td><select ng-model="flight.airportDeparture" style="width:100%">
+                    <option ng-repeat="airport in airports"
+                            value="{{airport.value}}">
+                        {{airport.nameAirport}}
+                    </option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td>airportDeparture</td>
+                <td><select ng-model="flight.airportArrival" style="width:100%">
+                    <option ng-repeat="airport in airports"
+                            value="{{airport.value}}">
+                        {{airport.nameAirport}}
+                    </option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td width="100">Date:</td>
+                <td><input type="text" id="Date" ng-model="flight.departureDate"/></td>
+            </tr>
+            <tr>
+                <td width="100">Time:</td>
+                <td><input type="text" id="Time" ng-model="flight.departureTime"/></td>
+            </tr>
+            <tr>
+                <td width="100">Price:</td>
+                <td><input type="text" id="price" ng-model="flight.price"/></td>
+            </tr>
+            <tr>
+                <td width="100">Name Aircraft:</td>
+                <td><input type="text" id="nameAircraft" ng-model="flight.aircraft.nameAircraft"/></td>
+            </tr>
+            <tr>
+                <td width="100">Place:</td>
+                <td><input type="text" id="numberSeatsAircraft" ng-model="flight.aircraft.numberSeatsAircraft"/></td>
+            </tr>
+        </table>
+        <a ng-click="updateFlight( flight.id,flight.numFlight, flight.airportDeparture, flight.airportArrival, flight.departureDate, flight.departureTime, flight.aircraft, flight.price)"
+           class="btn btn-outline-secondary">Update Airport</a>
+        <a ng-click="addFlight(flight.numFlight, flight.airportDeparture, flight.airportArrival, flight.departureDate, flight.departureTime, flight.aircraft, flight.price)"
+           class="btn btn-outline-success">Add Airport</a>
+        <a ng-click="deleteFlight(flight.id)" class="btn btn-outline-danger">Delete Airport</a>
+        <a ng-click="getFlight(flight.id)" class="btn btn-outline-secondary">Get Airport</a>
+    </div>
+</div>
+<div class="container">
+    <table class="table table-striped table-bordered" style="width:100%">
         <thead>
         <th>id</th>
         <th>numFlight</th>
@@ -71,25 +100,21 @@
         <th>Airport arrival</th>
         <th>Date</th>
         <th>Time</th>
-        <th>Name</th>
-        <th></th>
-        <th></th>
+        <th>Price</th>
+        <th>Aircraft</th>
+        <th>Places</th>
         </thead>
         <tbody class="table-bordered">
         <tr ng-repeat="flight in flights">
             <td>{{flight.idFlight}}</td>
             <td>{{flight.numFlight}}</td>
-            <td>{{flight.airportsDeparture.nameAirport}}</td>
-            <td>{{flight.airportsArrival.nameAirport}}</td>
+            <td>{{flight.airportDeparture.nameAirport}}</td>
+            <td>{{flight.airportArrival.nameAirport}}</td>
             <td>{{flight.departureDate}}</td>
             <td>{{flight.departureTime}}</td>
-            <td>{{flight.aircraftName}}</td>
-            <td>
-                <a ng-click="editFlight(flight)" class="btn-outline-secondary">Edit</a>
-            </td>
-            <td>
-                <a ng-click="deleteFlight(flight)" class="btn-outline-danger">Delete</a>
-            </td>
+            <td>{{flight.price}}</td>
+            <td>{{flight.aircraft.nameAircraft}}</td>
+            <td>{{flight.aircraft.numberSeatsAircraft}}</td>
         </tr>
         </tbody>
     </table>

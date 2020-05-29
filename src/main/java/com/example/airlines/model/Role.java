@@ -1,9 +1,10 @@
 package com.example.airlines.model;
 
+
 import org.springframework.security.core.GrantedAuthority;
 
-public enum  Role implements GrantedAuthority {
-    USER,ADMIN,MANAGER;
+public enum Role implements GrantedAuthority {
+    ADMIN, USER;
 
     @Override
     public String getAuthority() {

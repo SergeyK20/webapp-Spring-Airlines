@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<html lang="en"xmlns:th="http://www.thymeleaf.org"xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
     <title>Booking.city</title>
@@ -7,47 +7,54 @@
           crossorigin="anonymous">
 </head>
 <body class="container-fluid" ng-app="app" ng-controller="CityCtrl" >
-<ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
-    <li class="nav-item">
-        <a class="nav-link" href="/">Booking</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="flights.html">Flights</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="airports.html">Airports</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" href="city.html">City</a>
-    </li>
-    <a class="btn btn-outline-secondary" href="/logout">logout</a>
-</ul>
-<div class="container-fluid">
+<div sec:authorize="hasAuthority('ADMIN')">
+    <ul class="nav nav-pills  nav-tabs">
+        <li class="nav-item" >
+            <a class="nav-link active" href="/">Booking</a>
+        </li>
+        <li  class="nav-item" >
+            <a class="nav-link" href="/flights.html">Flights</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/airports.html">Airports</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/user.html">User</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/city.html">City</a>
+        </li>
+        <a class="btn btn-outline-secondary" href="/logout">logout</a>
+        <h3  sec:authentication="name" align="left">name</h3>
+    </ul>
+</div >
+<div class="container" align="center">
     <p style="color: green">{{message}}</p>
     <p style="color: red">{{errorMessage}}</p>
     <table>
     <tr>
         <td width="100">ID:</td>
-        <td><input type="text" id="id" ng-model="city.idCity" /></td>
+        <td><input type="text" id="id" ng-model="city.id" /></td>
     </tr>
     <tr>
-        <td width="100">Name:</td>
-        <td><input type="text" id="name" ng-model="city.nameCity" /></td>
+        <td width="100">Name City:</td>
+        <td><input type="text" id="nameCity" ng-model="city.nameCity" /></td>
     </tr>
     </table>
-    <a ng-click="updateCity(city.idCity,city.nameCity)"class="btn btn-outline-secondary">Update City</a>
+    <a ng-click="updateCity(city.id,city.nameCity)"class="btn btn-outline-secondary">Update City</a>
     <a ng-click="addCity(city.nameCity)"class="btn btn-outline-success">Add City</a>
-    <a ng-click="deleteCity(city.idCity)"class="btn btn-outline-danger" >Delete City</a>
+    <a ng-click="deleteCity(city.id)"class="btn btn-outline-danger" >Delete City</a>
+    <a ng-click="getCity(city.id)"class="btn btn-outline-secondary">Get City</a>
 </div>
-<div class="container-fluid" >
-    <table class="table-striped">
+<div class="container mt-5" >
+    <table class="table table-striped table-bordered" style="width:100%">
         <thead>
         <th>id  City </th>
-        <th>nameCity</th>
+        <th>name City</th>
         </thead>
         <tbody class="table-bordered">
         <tr ng-repeat="city in cities">
-            <td>{{city.idCity}}</td>
+            <td>{{city.id}}</td>
             <td>{{city.nameCity}}</td>
         </tr>
         </tbody>

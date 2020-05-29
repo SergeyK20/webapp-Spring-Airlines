@@ -12,14 +12,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface CityDAO extends JpaRepository<City,Integer> {
+public interface CityDAO extends JpaRepository<City, Integer> {
 
+    @Override
     java.util.Optional<City> findById(Integer Id);
+
+    @Override
     City save(City city);
+
+    @Override
     void deleteById(Integer id);
 
     @Modifying
-    @Query("update City c set c.nameCity = :city where c.idCity = :id ")
-    void update(@Param("city") String city,@Param("id") Integer id);
+    @Query("update City c set c.nameCity = :city where c.id = :id ")
+    void update(@Param("city") String city, @Param("id") Integer id);
 
 }

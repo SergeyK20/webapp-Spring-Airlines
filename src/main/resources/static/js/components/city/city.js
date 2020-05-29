@@ -1,8 +1,8 @@
 var app = angular.module('app',[]);
-app.controller("CityCtrl", function ($scope, $http,CityCRUDService) {
+app.controller("CityCtrl", function ($scope, $http, CityService) {
     $scope.cities = [];
     $scope.city={
-        idCity: 1,
+        id: 1,
         nameCity:"hello"
     };
 
@@ -21,7 +21,7 @@ app.controller("CityCtrl", function ($scope, $http,CityCRUDService) {
         );
     };
     $scope.updateCity = function () {
-        CityCRUDService.updateCity($scope.city.idCity,$scope.city.nameCity)
+        CityService.updateCity($scope.city.idCity,$scope.city.nameCity)
             .then(function success(response){
                     $scope.message = 'City data updated!';
                     $scope.errorMessage = '';
@@ -34,29 +34,28 @@ app.controller("CityCtrl", function ($scope, $http,CityCRUDService) {
     }
 
     $scope.getCity = function () {
-        var id = $scope.city.idCity;
-        CityCRUDService.getCity($scope.city.idCity)
-            .then(function success(response){
+        var id = $scope.city.id;
+        CityService.getCity($scope.city.id)
+            .then(function success(response) {
                     $scope.city = response.data;
-                    $scope.city.idCity = id;
-                    $scope.message='';
+                    $scope.city.id = id;
+                    $scope.message = '';
                     $scope.errorMessage = '';
                 },
-                function error (response ){
+                function error(response) {
                     $scope.message = '';
-                    if (response.status === 404){
-                        $scope.errorMessage = 'City not found!';
-                    }
-                    else {
-                        $scope.errorMessage = "Error getting city!";
+                    if (response.status === 404) {
+                        $scope.errorMessage = 'Customer not found!';
+                    } else {
+                        $scope.errorMessage = "Error getting customer!";
                     }
                 });
-        _refreshCityData();
+        CustomerData()
     }
 
     $scope.addCity = function () {
         if ($scope.city != null && $scope.city.nameCity) {
-            CityCRUDService.addCity($scope.city.nameCity)
+            CityService.addCity($scope.city.nameCity)
                 .then (function success(response){
                         $scope.message = 'City added!';
                         $scope.errorMessage = '';
@@ -74,7 +73,7 @@ app.controller("CityCtrl", function ($scope, $http,CityCRUDService) {
     }
 
     $scope.deleteCity = function () {
-        CityCRUDService.deleteCity($scope.city.idCity)
+        CityService.deleteCity($scope.city.id)
             .then (function success(response){
                     $scope.message = 'City deleted!';
                     $scope.city = null;
@@ -89,12 +88,12 @@ app.controller("CityCtrl", function ($scope, $http,CityCRUDService) {
 
 
 });
-app.service('CityCRUDService',['$http', function ($http) {
+app.service('CityService',['$http', function ($http) {
 
-    this.getCity = function getCity(idCity){
+    this.getCity = function getCity(id){
         return $http({
             method: 'GET',
-            url: '/city/'+idCity
+            url: '/city/'+id
         });
     }
 
@@ -106,19 +105,25 @@ app.service('CityCRUDService',['$http', function ($http) {
         });
     }
 
-    this.deleteCity = function deleteCity(idCity){
+    this.deleteCity = function deleteCity(id){
         return $http({
             method: 'DELETE',
-            url: '/city/'+idCity
+            url: '/city/'+id
         })
     }
 
-    this.updateCity = function updateCity(idCity,nameCity){
+    this.updateCity = function updateCity(id,nameCity){
         return $http({
-            method: 'PATCH',
-            url: '/city/'+idCity,
+            method: 'PUT',
+            url: '/city/'+id,
             data: {nameCity:nameCity}
         })
+    }
+    this.getCity = function getCity(id) {
+        return $http({
+            method: 'GET',
+            url: '/city/' + id
+        });
     }
 
 }]);

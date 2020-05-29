@@ -9,7 +9,7 @@
 </head>
 <body class="container-fluid"ng-app="MainController"ng-controller="MainCtrl">
 <div sec:authorize="hasAuthority('ADMIN')">
-    <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
+    <ul class="nav nav-pills  nav-tabs">
         <li class="nav-item" >
             <a class="nav-link active" href="/">Booking</a>
         </li>
@@ -20,22 +20,16 @@
             <a class="nav-link" href="/airports.html">Airports</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="/user.html">User</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="/city.html">City</a>
         </li>
         <a class="btn btn-outline-secondary" href="/logout">logout</a>
+        <h3  sec:authentication="name" align="left">name</h3>
     </ul>
-    <h3  sec:authentication="name" align="left">name</h3>
 </div >
-    <div  sec:authorize="hasAuthority('USER')">
-        <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
-            <li class="nav-item" >
-                <a class="nav-link active" href="/">Booking</a>
-            </li>
-            <a class="btn btn-outline-secondary" href="/logout">logout</a>
-            <h3  sec:authentication="name" align="right">name</h3>
-        </ul>
-    </div>
-    <div  sec:authorize="hasAuthority('MANAGER')">
+<div  sec:authorize="hasAuthority('USER')">
     <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
         <li class="nav-item" >
             <a class="nav-link active" href="/">Booking</a>
@@ -43,38 +37,47 @@
         <a class="btn btn-outline-secondary" href="/logout">logout</a>
         <h3  sec:authentication="name" align="right">name</h3>
     </ul>
-    </div>
+</div>
+<div  sec:authorize="hasAuthority('MANAGER')">
+    <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
+        <li class="nav-item" >
+            <a class="nav-link active" href="/">Booking</a>
+        </li>
+        <a class="btn btn-outline-secondary" href="/logout">logout</a>
+        <h3  sec:authentication="name" align="right">name</h3>
+    </ul>
+</div>
 <div>
-<table class="table-striped container-fluid" align="center">
-    <thead>
-    <th>id</th>
-    <th>numFlight</th>
-    <th>Airport depart</th>
-    <th>Airport arrival</th>
-    <th>Date</th>
-    <th>Time</th>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    </thead>
-    <tbody class="table-bordered">
-    <tr ng-repeat="flight in flights">
-        <td>{{flight.idFlight}}</td>
-        <td>{{flight.numFlight}}</td>
-        <td>{{flight.airportsDeparture.nameAirport}}</td>
-        <td>{{flight.airportsArrival.nameAirport}}</td>
-        <td>{{flight.departureDate}}</td>
-        <td>{{flight.departureTime}}</td>
-        <td>{{flight.aircraftName}}</td>
-        <td>
-            <a ng-click="editFlight(flight)" class="btn-outline-secondary">Edit</a>
-        </td>
-        <td>
-            <a ng-click="deleteFlight(flight)" class="btn-outline-danger">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <table class="table-striped container-fluid" align="center">
+        <thead>
+        <th>id</th>
+        <th>numFlight</th>
+        <th>Airport depart</th>
+        <th>Airport arrival</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Name</th>
+        <th></th>
+        <th></th>
+        </thead>
+        <tbody class="table-bordered">
+        <tr ng-repeat="flight in flights">
+            <td>{{flight.idFlight}}</td>
+            <td>{{flight.numFlight}}</td>
+            <td>{{flight.airportsDeparture.nameAirport}}</td>
+            <td>{{flight.airportsArrival.nameAirport}}</td>
+            <td>{{flight.departureDate}}</td>
+            <td>{{flight.departureTime}}</td>
+            <td>{{flight.aircraftName}}</td>
+            <td>
+                <a ng-click="editFlight(flight)" class="btn-outline-secondary">Edit</a>
+            </td>
+            <td>
+                <a ng-click="deleteFlight(flight)" class="btn-outline-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 
