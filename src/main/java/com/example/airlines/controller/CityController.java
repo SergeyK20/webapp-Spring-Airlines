@@ -2,6 +2,8 @@ package com.example.airlines.controller;
 
 import com.example.airlines.dao.CityDAO;
 import com.example.airlines.dto.CityDTO;
+import com.example.airlines.exceptions.ExceptionWhenWorkingWithDB;
+import com.example.airlines.exceptions.IdSearchException;
 import com.example.airlines.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,11 @@ public class CityController {
     @GetMapping("/{Id}")
     public CityDTO getById(@PathVariable("Id") int id) {
         CityDTO cityDTO = new CityDTO();
-        return cityDTO.cityInCityDTO(cityDAO.findById(id).get());
+        if(cityDAO.findById(id).isPresent()) {
+            return cityDTO.cityInCityDTO(cityDAO.findById(id).get());
+        } else {
+            throw new IdSearchException("did not found city");
+        }
     }
 
     /**
@@ -40,7 +46,11 @@ public class CityController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public City saveCity(@RequestBody City city) {
-        return cityDAO.save(city);
+        try {
+            return cityDAO.save(city);
+        } catch(Exception e){
+            throw new ExceptionWhenWorkingWithDB("Did not create city");
+        }
     }
 
     /**
@@ -48,14 +58,22 @@ public class CityController {
      */
     @PutMapping("/{Id}")
     public void updateCity(@PathVariable("Id") int id, @RequestBody City city) {
-        cityDAO.findById(id).map(city1 -> {
-            city1.setNameCity(city.getNameCity());
-            return cityDAO.save(city1);
-        });
+        try {
+            cityDAO.findById(id).map(city1 -> {
+                city1.setNameCity(city.getNameCity());
+                return cityDAO.save(city1);
+            });
+        } catch (Exception e){
+            throw new ExceptionWhenWorkingWithDB("Did not update city");
+        }
     }
 
     @DeleteMapping("/{Id}")
     public void deleteCity(@PathVariable("Id") int id) {
-        cityDAO.deleteById(id);
+        try {
+            cityDAO.deleteById(id);
+        } catch (Exception e){
+            throw new ExceptionWhenWorkingWithDB("Did not delete city");
+        }
     }
 }

@@ -5,6 +5,8 @@ import com.example.airlines.dao.AirportDAO;
 import com.example.airlines.dao.FlightDAO;
 import com.example.airlines.dao.UserFlightDAO;
 import com.example.airlines.dto.FlightRoleUserDTO;
+import com.example.airlines.exceptions.ExceptionWhenWorkingWithDB;
+import com.example.airlines.exceptions.IdSearchException;
 import com.example.airlines.model.Flight;
 import com.example.airlines.model.UserFlight;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,7 @@ public class FlightController {
     public FlightRoleUserDTO findFlight(@PathVariable("Id") int id) {
         FlightRoleUserDTO flightRoleUserDTO = new FlightRoleUserDTO();
         if (!flightDAO.findById(id).isPresent()) {
-            return null;
+            throw new IdSearchException("Did not found flight");
         } else {
             return flightRoleUserDTO.flightToFlightClientDTO(flightDAO.findById(id).get());
         }
@@ -99,90 +101,107 @@ public class FlightController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     public FlightRoleUserDTO saveFlight(@Valid @RequestBody Flight flightBeta) {
-        FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
-        Flight flight = setFlight(flightBeta);
-        if (flight != null) {
-            return flightsDTO.flightToFlightClientDTO(flightDAO.save(flight));
-        } else {
-            return null;
-        }
-    }
 
-    /**
-     * @param id         id рейса который хотите изменить
-     * @param flightBeta {
-     *                   "numFlight": "111111",
-     *                   "airportDeparture": {
-     *                   "id": 1
-     *                   },
-     *                   "airportArrival": {
-     *                   "id": 2
-     *                   },
-     *                   "departureDate": "2020-05-19",
-     *                   "departureTime": "13:00:00",
-     *                   "aircraft": {
-     *                   "id": 1
-     *                   },
-     *                   "price": 123132.0
-     *                   }
-     */
-    @PutMapping("/{Id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void updateFlight(@PathVariable("Id") int id, @RequestBody @Valid Flight flightBeta) {
-        flightDAO.findById(id).map(flight -> {
-            flightBeta.setId(id);
-            flight = setFlight(flightBeta);
-            if (flight != null) {
-                return flightDAO.save(flight);
+            FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
+            Flight flight = setFlight(flightBeta);
+            if(flight != null) {
+                try {
+                    return flightsDTO.flightToFlightClientDTO(flightDAO.save(flight));
+                } catch (Exception e) {
+                    throw new ExceptionWhenWorkingWithDB("Did not create airport");
+                }
+            } else {
+                throw new IdSearchException("Did not found flight");
+            }
+        }
+
+        /**
+         * @param id         id рейса который хотите изменить
+         * @param flightBeta {
+         *                   "numFlight": "111111",
+         *                   "airportDeparture": {
+         *                   "id": 1
+         *                   },
+         *                   "airportArrival": {
+         *                   "id": 2
+         *                   },
+         *                   "departureDate": "2020-05-19",
+         *                   "departureTime": "13:00:00",
+         *                   "aircraft": {
+         *                   "id": 1
+         *                   },
+         *                   "price": 123132.0
+         *                   }
+         */
+        @PutMapping("/{Id}")
+        @PreAuthorize("hasRole('ADMIN')")
+        public void updateFlight ( @PathVariable("Id") int id, @RequestBody @Valid Flight flightBeta){
+            if(flightDAO.findById(id).isPresent()) {
+                flightDAO.findById(id).map(flight -> {
+                    flightBeta.setId(id);
+                    flight = setFlight(flightBeta);
+                    if (flight != null) {
+                        try {
+                            return flightDAO.save(flight);
+                        } catch (Exception e) {
+                            throw new ExceptionWhenWorkingWithDB("Did not create airport");
+                        }
+                    } else {
+                        // ошибка
+                        throw new IdSearchException("Did not found flight");
+                    }
+                });
+            } else {
+                throw new IdSearchException("Did not found flight");
+            }
+        }
+
+        private Flight setFlight (Flight flightBeta){
+            Flight flight = new Flight();
+            if (flightBeta.getId() != 0) {
+                flight.setId(flightBeta.getId());
+            }
+            flight.setNumFlight(flightBeta.getNumFlight());
+            if (airportDAO.findById(flightBeta.getAirportDeparture().getId()).isPresent()) {
+                flight.setAirportDeparture(airportDAO.findById(flightBeta.getAirportDeparture().getId()).get());
             } else {
                 // ошибка
                 return null;
             }
-        });
+            if (airportDAO.findById(flightBeta.getAirportArrival().getId()).isPresent()) {
+                flight.setAirportArrival(airportDAO.findById(flightBeta.getAirportArrival().getId()).get());
+            } else {
+                // ошибка
+                return null;
+            }
+            flight.setDepartureDate(flightBeta.getDepartureDate());
+            flight.setDepartureTime(flightBeta.getDepartureTime());
+            if (aircraftDAO.findById(flightBeta.getAircraft().getId()).isPresent()) {
+                flight.setAircraft(aircraftDAO.findById(flightBeta.getAircraft().getId()).get());
+            } else {
+                // ошибка
+                return null;
+            }
+            flight.setPrice(flightBeta.getPrice());
+            if (flightBeta.getAccountUsers() != null) {
+                flight.setAccountUsers(flightBeta.getAccountUsers());
+            } else {
+                flight.setAccountUsers(new HashSet<UserFlight>());
+            }
+            return flight;
+
+        }
+
+
+        @DeleteMapping("/{Id}")
+        @PreAuthorize("hasRole('ADMIN')")
+        public void deleteFlight ( @PathVariable("Id") int id){
+            try {
+                flightDAO.deleteById(id);
+            } catch (Exception e){
+                throw new ExceptionWhenWorkingWithDB("Did not delete airport");
+            }
+        }
+
+
     }
-
-    private Flight setFlight(Flight flightBeta) {
-        Flight flight = new Flight();
-        if (flightBeta.getId() != 0) {
-            flight.setId(flightBeta.getId());
-        }
-        flight.setNumFlight(flightBeta.getNumFlight());
-        if (airportDAO.findById(flightBeta.getAirportDeparture().getId()).isPresent()) {
-            flight.setAirportDeparture(airportDAO.findById(flightBeta.getAirportDeparture().getId()).get());
-        } else {
-            // ошибка
-            return null;
-        }
-        if (airportDAO.findById(flightBeta.getAirportArrival().getId()).isPresent()) {
-            flight.setAirportArrival(airportDAO.findById(flightBeta.getAirportArrival().getId()).get());
-        } else {
-            // ошибка
-            return null;
-        }
-        flight.setDepartureDate(flightBeta.getDepartureDate());
-        flight.setDepartureTime(flightBeta.getDepartureTime());
-        if (aircraftDAO.findById(flightBeta.getAircraft().getId()).isPresent()) {
-            flight.setAircraft(aircraftDAO.findById(flightBeta.getAircraft().getId()).get());
-        } else {
-            // ошибка
-            return null;
-        }
-        flight.setPrice(flightBeta.getPrice());
-        if (flightBeta.getAccountUsers() != null) {
-            flight.setAccountUsers(flightBeta.getAccountUsers());
-        } else {
-            flight.setAccountUsers(new HashSet<UserFlight>());
-        }
-        return flight;
-
-    }
-
-
-    @DeleteMapping("/{Id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void deleteFlight(@PathVariable("Id") int id) {
-        flightDAO.deleteById(id);
-    }
-
-
-}

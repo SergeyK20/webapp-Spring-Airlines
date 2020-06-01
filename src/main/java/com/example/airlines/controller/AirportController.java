@@ -3,6 +3,8 @@ package com.example.airlines.controller;
 import com.example.airlines.dao.AirportDAO;
 import com.example.airlines.dao.CityDAO;
 import com.example.airlines.dto.AirportDTO;
+import com.example.airlines.exceptions.ExceptionWhenWorkingWithDB;
+import com.example.airlines.exceptions.IdSearchException;
 import com.example.airlines.model.Airport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,11 @@ public class AirportController {
     @GetMapping("/{Id}")
     public AirportDTO getById(@PathVariable("Id") int id) {
         AirportDTO airportDTO = new AirportDTO();
-        return airportDTO.airportInAirportDTO(airportDao.findById(id).get());
+        if(airportDao.findById(id).isPresent()) {
+            return airportDTO.airportInAirportDTO(airportDao.findById(id).get());
+        } else {
+            throw new IdSearchException("did not found airport");
+        }
     }
 
     @GetMapping("/findByNameCity/{name}")
@@ -47,7 +53,11 @@ public class AirportController {
     public void updateAirport(@PathVariable("Id") int id, @RequestBody Airport airport) {
         airportDao.findById(id).map(airports -> {
             airports.setNameAirport(airport.getNameAirport());
-            airports.setAirportInTheCity(cityDAO.findById(airport.getAirportInTheCity().getId()).get());
+            if(cityDAO.findById(airport.getAirportInTheCity().getId()).isPresent()) {
+                airports.setAirportInTheCity(cityDAO.findById(airport.getAirportInTheCity().getId()).get());
+            } else {
+                throw new ExceptionWhenWorkingWithDB("Did not update airport");
+            }
             return airportDao.save(airports);
         });
     }
@@ -65,12 +75,24 @@ public class AirportController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public AirportDTO saveAirport(@RequestBody Airport airport) {
         AirportDTO airportDTO = new AirportDTO();
-        airport.setAirportInTheCity(cityDAO.findById(airport.getAirportInTheCity().getId()).get());
-        return airportDTO.airportInAirportDTO(airportDao.save(airport));
+        if(cityDAO.findById(airport.getAirportInTheCity().getId()).isPresent()) {
+            try {
+                airport.setAirportInTheCity(cityDAO.findById(airport.getAirportInTheCity().getId()).get());
+                return airportDTO.airportInAirportDTO(airportDao.save(airport));
+            } catch(Exception e){
+                throw new ExceptionWhenWorkingWithDB("Did not create airport");
+            }
+        } else {
+            throw new IdSearchException("did not found city");
+        }
     }
 
     @DeleteMapping("/{Id}")
     public void deleteAirport(@PathVariable("Id") int id) {
-        airportDao.deleteById(id);
+        try {
+            airportDao.deleteById(id);
+        } catch (Exception e) {
+            throw new ExceptionWhenWorkingWithDB("Did not delete airport");
+        }
     }
 }

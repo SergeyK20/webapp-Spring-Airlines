@@ -2,6 +2,9 @@ package com.example.airlines.controller;
 
 import com.example.airlines.dao.AccountUserDAO;
 import com.example.airlines.dto.AccountRoleUserDTO;
+import com.example.airlines.exceptions.CreateException;
+import com.example.airlines.exceptions.ExceptionWhenWorkingWithDB;
+import com.example.airlines.exceptions.IdSearchException;
 import com.example.airlines.model.AccountUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +33,11 @@ public class AccountController {
 
     @GetMapping("{id}")
     public AccountUser findByIdAccounts(@PathVariable("id") int id) {
-        return accountUserDAO.findById(id).get();
+        if(accountUserDAO.findById(id).isPresent()) {
+            return accountUserDAO.findById(id).get();
+        } else {
+            throw new IdSearchException("No found account...");
+        }
     }
 
 
@@ -39,7 +46,7 @@ public class AccountController {
      */
     @PutMapping("/admin/{Id}")
     public void updateAccountAdmin(@PathVariable("Id") int id, @RequestBody AccountUser accountUser) {
-        updateAccount(id, accountUser);
+            updateAccount(id, accountUser);
     }
 
 
@@ -57,7 +64,11 @@ public class AccountController {
     @PostMapping("/admin")
     @ResponseStatus(value = HttpStatus.CREATED)
     public AccountUser saveAccountAdmin(@RequestBody AccountUser accountUser) {
-        return accountUserDAO.save(accountUser);
+       try {
+           return accountUserDAO.save(accountUser);
+       } catch (Exception e){
+            throw new CreateException("Account not created");
+       }
     }
 
     /**
@@ -66,21 +77,33 @@ public class AccountController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public AccountUser saveAccountUser(@RequestBody AccountUser accountUser) {
-        return accountUserDAO.save(accountUser);
+        try {
+            return accountUserDAO.save(accountUser);
+        } catch (Exception e){
+            throw new CreateException("Account not created");
+        }
     }
 
     private void updateAccount(int id, AccountUser accountUser) {
-        accountUserDAO.findById(id).map(account1 -> {
-            account1.setLogin(accountUser.getLogin());
-            account1.setPasswordAccount(accountUser.getPasswordAccount());
-            account1.setEmail(accountUser.getEmail());
-            account1.setRoles(accountUser.getRoles());
-            return accountUserDAO.save(account1);
-        });
+        if(accountUserDAO.findById(id).isPresent()) {
+            accountUserDAO.findById(id).map(account1 -> {
+                account1.setLogin(accountUser.getLogin());
+                account1.setPasswordAccount(accountUser.getPasswordAccount());
+                account1.setEmail(accountUser.getEmail());
+                account1.setRoles(accountUser.getRoles());
+                return accountUserDAO.save(account1);
+            });
+        } else {
+            throw new IdSearchException("Did not found element on update");
+        }
     }
 
     @DeleteMapping("/{Id}")
     public void deleteAccount(@PathVariable("Id") int id) {
-        accountUserDAO.deleteById(id);
+        try {
+            accountUserDAO.deleteById(id);
+        } catch (Exception e){
+            throw new ExceptionWhenWorkingWithDB("Error when deleted element");
+        }
     }
 }
