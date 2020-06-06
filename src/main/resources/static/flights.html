@@ -39,14 +39,14 @@
                 <td><input type="text" id="id" ng-model="flight.id"/></td>
             </tr>
             <tr>
-                <td width="100">Name Airport:</td>
+                <td width="100">Name Flight:</td>
                 <td><input type="text" id="numFlight" ng-model="flight.numFlight"/></td>
             </tr>
             <tr>
                 <td>airportDeparture</td>
                 <td><select ng-model="flight.airportDeparture" style="width:100%">
                     <option ng-repeat="airport in airports"
-                            value="{{airport.value}}">
+                            value="{{airport}}">
                         {{airport.nameAirport}}
                     </option>
                 </select>
@@ -56,7 +56,7 @@
                 <td>airportDeparture</td>
                 <td><select ng-model="flight.airportArrival" style="width:100%">
                     <option ng-repeat="airport in airports"
-                            value="{{airport.value}}">
+                            value="{{airport}}">
                         {{airport.nameAirport}}
                     </option>
                 </select>
@@ -75,13 +75,16 @@
                 <td><input type="text" id="price" ng-model="flight.price"/></td>
             </tr>
             <tr>
-                <td width="100">Name Aircraft:</td>
-                <td><input type="text" id="nameAircraft" ng-model="flight.aircraft.nameAircraft"/></td>
+                <td>Aircraft</td>
+                <td><select ng-model="flight.aircraft" style="width:100%">
+                    <option ng-repeat="aircraft in aircrafts"
+                            value="{{aircraft}}">
+                        {{aircraft.nameAircraft}}
+                    </option>
+                </select>
+                </td>
             </tr>
-            <tr>
-                <td width="100">Place:</td>
-                <td><input type="text" id="numberSeatsAircraft" ng-model="flight.aircraft.numberSeatsAircraft"/></td>
-            </tr>
+
         </table>
         <a ng-click="updateFlight( flight.id,flight.numFlight, flight.airportDeparture, flight.airportArrival, flight.departureDate, flight.departureTime, flight.aircraft, flight.price)"
            class="btn btn-outline-secondary">Update Airport</a>
@@ -119,7 +122,7 @@
         </tbody>
     </table>
 </div>
-<script type="text/javascript" src="js/components/angular.js"></script>
+<script type="text/javascript" src="js/components/angular.min.js"></script>
 <script type="text/javascript" src="js/components/flight/flights.js"></script>
 </body>
 </html>

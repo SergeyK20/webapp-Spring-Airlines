@@ -1,20 +1,51 @@
 var app = angular.module("FlightsController", [])
 
-app.controller("FlightsCtrl", function ($scope, $http) {
+app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
     $scope.flights = [];
+    let airport1;
+    let airport2;
+    let aircraft;
+    $scope.cities=[];
+    $scope.aircrafts=[];
+    $scope.aircraft={
+        id:1,
+        nameAircraft:"Tu144",
+        numberSeatsAircraft:44
+    }
+    $scope.airport=[];
+    let city;
+    $scope.airport={
+        id: 1,
+        nameAirport:"Kurumoch",
+        airportInTheCity:city
+    };
     $scope.flight = {
         id: "1",
         numFlight: "s12324",
-        airportDeparture: "Kurumoch",
-        airportArrival: "Another",
+        airportDeparture: airport1,
+        airportArrival: airport2,
         departureDate: "03.02.2020",
         departureTime: "17:50",
-        aircraft: "Simple",
+        aircraft: aircraft,
         price: "5750"
     };
     FlightsData()
     AirportsData()
     CityData()
+    AircraftData()
+    function AircraftData() {
+        $http({
+            method: 'GET',
+            url: '/aircraft'
+        }).then(
+            function (res) { // success
+                $scope.aircrafts = res.data;
+            },
+            function (res) { // error
+                console.log("Error: " + res.status + " : " + res.data);
+            }
+        );
+    };
     function CityData() {
         $http({
             method: 'GET',
@@ -89,7 +120,7 @@ app.controller("FlightsCtrl", function ($scope, $http) {
 
     $scope.addFlight = function () {
         if ($scope.airport != null ) {
-            AirportService.addFlight($scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
+           FlightService.addFlight($scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
                 .then (function success(response){
                         $scope.message = 'Flight added!';
                         $scope.errorMessage = '';

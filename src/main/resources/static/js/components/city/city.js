@@ -21,7 +21,7 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
         );
     };
     $scope.updateCity = function () {
-        CityService.updateCity($scope.city.idCity,$scope.city.nameCity)
+        CityService.updateCity($scope.city.id,$scope.city.nameCity)
             .then(function success(response){
                     $scope.message = 'City data updated!';
                     $scope.errorMessage = '';

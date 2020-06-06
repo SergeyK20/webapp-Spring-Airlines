@@ -7,7 +7,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet"
           crossorigin="anonymous">
 </head>
-<body class="container-fluid"ng-app="MainController"ng-controller="MainCtrl">
+<body class="container-fluid"ng-app="FlightsController"ng-controller="FlightsCtrl">
+<nav>
 <div sec:authorize="hasAuthority('ADMIN')">
     <ul class="nav nav-pills  nav-tabs">
         <li class="nav-item" >
@@ -20,14 +21,15 @@
             <a class="nav-link" href="/airports.html">Airports</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/user.html">User</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" href="/city.html">City</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/aircraft.html">Aircraft</a>
+        </li>
         <a class="btn btn-outline-secondary" href="/logout">logout</a>
-        <h3  sec:authentication="name" align="left">name</h3>
-    </ul>
+        <h3  sec:authentication="name" align="left"></h3>
+        </ul>
+
 </div >
 <div  sec:authorize="hasAuthority('USER')">
     <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
@@ -35,7 +37,7 @@
             <a class="nav-link active" href="/">Booking</a>
         </li>
         <a class="btn btn-outline-secondary" href="/logout">logout</a>
-        <h3  sec:authentication="name" align="right">name</h3>
+        <h3  sec:authentication="name" align="right"></h3>
     </ul>
 </div>
 <div  sec:authorize="hasAuthority('MANAGER')">
@@ -44,10 +46,11 @@
             <a class="nav-link active" href="/">Booking</a>
         </li>
         <a class="btn btn-outline-secondary" href="/logout">logout</a>
-        <h3  sec:authentication="name" align="right">name</h3>
+        <h3  sec:authentication="name" align="right"></h3>
     </ul>
 </div>
-<div>
+</nav>
+<div class="container">
     <table class="table-striped container-fluid" align="center">
         <thead>
         <th>id</th>
@@ -81,7 +84,7 @@
 </div>
 
 
-<script type="text/javascript" src="js/components/angular.js"></script>
-<script type="text/javascript" src="js/components/main.js"></script>
+<script type="text/javascript" src="js/components/angular.min.js"></script>
+<script type="text/javascript" src="js/components/flight/flights.js"></script>
 </body>
 </html>

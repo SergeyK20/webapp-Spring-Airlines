@@ -36,9 +36,9 @@
                 <td><input type="text" id="nameCity" ng-model="airport.nameAirport" /></td>
             </tr>
             <td>airportInTheCity</td>
-            <td ><select type="city"  ng-model="airport.airportInTheCity" style="width:100%">
+            <td ><select type="text"  ng-model="airport.airportInTheCity" style="width:100%">
                 <option ng-repeat="city in cities"
-                        value="{{city.value}}">
+                        value="{{city}}">
                     {{city.nameCity}}
                 </option>
             </select>
@@ -68,6 +68,6 @@
    </div>
 
 </body>
-<script type="text/javascript" src="js/components/angular.js"></script>
+<script type="text/javascript" src="js/components/angular.min.js"></script>
 <script type="text/javascript" src="js/components/airports/airports.js"></script>
 </html>

@@ -2,11 +2,13 @@ var app = angular.module("Airports",[])
 
 app.controller("AirportsCtrl", function($scope,$http,AirportService){
     $scope.airports=[];
+    let city;
     $scope.airport={
         id: 1,
         nameAirport:"Kurumoch",
-        airportInTheCity:"2"
+        airportInTheCity:city
     };
+
     $scope.cities=[];
     $scope.city={
         id: 1,
