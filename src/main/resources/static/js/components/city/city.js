@@ -50,7 +50,7 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
                         $scope.errorMessage = "Error getting customer!";
                     }
                 });
-        CustomerData()
+       // CustomerData()
     }
 
     $scope.addCity = function () {

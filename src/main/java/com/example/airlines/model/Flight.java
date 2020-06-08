@@ -49,14 +49,12 @@ public class Flight {
 
     @Column(name = "Departure_date")
     @NotNull
-    @Temporal(TemporalType.DATE)
     public LocalDate getDepartureDate() {
         return departureDate;
     }
 
     @Column(name = "Departure_time")
     @NotNull
-    @Temporal(TemporalType.TIME)
     public LocalTime getDepartureTime() {
         return departureTime;
     }

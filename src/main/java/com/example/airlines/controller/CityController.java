@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/city")
-@PreAuthorize("hasRole('ADMIN')")
+/*@PreAuthorize("hasRole('ADMIN')")*/
 public class CityController {
 
     private CityDAO cityDAO;
@@ -25,6 +25,7 @@ public class CityController {
     }
 
     @GetMapping
+    /*@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")*/
     public List<CityDTO> getAllCity() {
         CityDTO cityDTO = new CityDTO();
         return cityDTO.cityListInCityDTOList(cityDAO.findAll());

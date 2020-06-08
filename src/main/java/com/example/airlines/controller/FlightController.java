@@ -5,10 +5,12 @@ import com.example.airlines.dao.AirportDAO;
 import com.example.airlines.dao.FlightDAO;
 import com.example.airlines.dao.UserFlightDAO;
 import com.example.airlines.dto.FlightRoleUserDTO;
+import com.example.airlines.exceptions.CreateException;
 import com.example.airlines.exceptions.ExceptionWhenWorkingWithDB;
 import com.example.airlines.exceptions.IdSearchException;
 import com.example.airlines.model.Flight;
 import com.example.airlines.model.UserFlight;
+import com.example.airlines.parser.FlightParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,7 +40,7 @@ public class FlightController {
      * @return возвращает список рейсов без аккаунтов
      */
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    /*@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")*/
     public List<FlightRoleUserDTO> getAllCityClient() {
 
         FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
@@ -50,7 +52,7 @@ public class FlightController {
      * @return возвращает рейс без аккаунта по id
      */
     @GetMapping("/Id/{Id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    /*@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")*/
     public FlightRoleUserDTO findFlight(@PathVariable("Id") int id) {
         FlightRoleUserDTO flightRoleUserDTO = new FlightRoleUserDTO();
         if (!flightDAO.findById(id).isPresent()) {
@@ -64,7 +66,7 @@ public class FlightController {
      * Фильтрация по городам прибытия
      */
     @GetMapping("/City_arrival/{City}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+   /* @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")*/
     public List<FlightRoleUserDTO> findFlightByCityArrival(@PathVariable("City") String city) {
         FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
         return flightsDTO.flightListToFlightClientDTOList(flightDAO.findByCityArrival(city));
@@ -74,14 +76,14 @@ public class FlightController {
      * Фильтрация по городам отбытия
      */
     @GetMapping("/City_departure/{City}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    /*@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")*/
     public List<FlightRoleUserDTO> findFlightByCityDeparture(@PathVariable("City") String city) {
         FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
         return flightsDTO.flightListToFlightClientDTOList(flightDAO.findByCityDeparture(city));
     }
 
     /**
-     * @param flightBeta {
+     * @param {
      *                   "numFlight": "111111",
      *                   "airportDeparture": {
      *                   "id": 1
@@ -99,25 +101,29 @@ public class FlightController {
      */
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ADMIN')")
-    public FlightRoleUserDTO saveFlight(@Valid @RequestBody Flight flightBeta) {
-
+   /* @PreAuthorize("hasRole('ADMIN')")*/
+    public FlightRoleUserDTO saveFlight(@RequestBody String flightString) {
             FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
-            Flight flight = setFlight(flightBeta);
-            if(flight != null) {
-                try {
-                    return flightsDTO.flightToFlightClientDTO(flightDAO.save(flight));
-                } catch (Exception e) {
-                    throw new ExceptionWhenWorkingWithDB("Did not create airport");
+            try {
+                Flight flightBeta = FlightParser.flightParser(flightString);
+                Flight flight = setFlight(flightBeta);
+                if (flight != null) {
+                    try {
+                        return flightsDTO.flightToFlightClientDTO(flightDAO.save(flight));
+                    } catch (Exception e) {
+                        throw new ExceptionWhenWorkingWithDB("Did not create airport");
+                    }
+                } else {
+                    throw new IdSearchException("Did not found flight");
                 }
-            } else {
-                throw new IdSearchException("Did not found flight");
+            } catch (Exception ex){
+                throw new CreateException("Did not create flight");
             }
         }
 
         /**
          * @param id         id рейса который хотите изменить
-         * @param flightBeta {
+         * @param {
          *                   "numFlight": "111111",
          *                   "airportDeparture": {
          *                   "id": 1
@@ -134,25 +140,30 @@ public class FlightController {
          *                   }
          */
         @PutMapping("/{Id}")
-        @PreAuthorize("hasRole('ADMIN')")
-        public void updateFlight ( @PathVariable("Id") int id, @RequestBody @Valid Flight flightBeta){
-            if(flightDAO.findById(id).isPresent()) {
-                flightDAO.findById(id).map(flight -> {
-                    flightBeta.setId(id);
-                    flight = setFlight(flightBeta);
-                    if (flight != null) {
-                        try {
-                            return flightDAO.save(flight);
-                        } catch (Exception e) {
-                            throw new ExceptionWhenWorkingWithDB("Did not create airport");
+        /*@PreAuthorize("hasRole('ADMIN')")*/
+        public void updateFlight ( @PathVariable("Id") int id, @RequestBody String flightString){
+            try {
+                Flight flightBeta = FlightParser.flightParser(flightString);
+                if (flightDAO.findById(id).isPresent()) {
+                    flightDAO.findById(id).map(flight -> {
+                        flightBeta.setId(id);
+                        flight = setFlight(flightBeta);
+                        if (flight != null) {
+                            try {
+                                return flightDAO.save(flight);
+                            } catch (Exception e) {
+                                throw new ExceptionWhenWorkingWithDB("Did not create airport");
+                            }
+                        } else {
+                            // ошибка
+                            throw new IdSearchException("Did not found flight");
                         }
-                    } else {
-                        // ошибка
-                        throw new IdSearchException("Did not found flight");
-                    }
-                });
-            } else {
-                throw new IdSearchException("Did not found flight");
+                    });
+                } else {
+                    throw new IdSearchException("Did not found flight");
+                }
+            } catch (Exception e){
+                throw new CreateException("Did not create flight");
             }
         }
 
@@ -188,13 +199,16 @@ public class FlightController {
             } else {
                 flight.setAccountUsers(new HashSet<UserFlight>());
             }
+            if(flight.getAirportDeparture().getId() == flight.getAirportArrival().getId()){
+                return null;
+            }
             return flight;
 
         }
 
 
         @DeleteMapping("/{Id}")
-        @PreAuthorize("hasRole('ADMIN')")
+        /*@PreAuthorize("hasRole('ADMIN')")*/
         public void deleteFlight ( @PathVariable("Id") int id){
             try {
                 flightDAO.deleteById(id);

@@ -118,12 +118,12 @@ app.service('AirportService',['$http', function ($http) {
         });
     }
 
-    this.addAirport = function addAirport(nameAirport,airportinTheCity){
+    this.addAirport = function addAirport(nameAirport,airportInTheCity){
         return $http({
             method: 'POST',
             url: '/airports',
             data: {nameAirport:nameAirport,
-                    airportInTheCity:airportinTheCity}
+                    airportInTheCity:  airportInTheCity}
         });
     }
 
