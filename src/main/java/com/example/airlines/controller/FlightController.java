@@ -63,6 +63,16 @@ public class FlightController {
     }
 
     /**
+     * Фильтрация по подстроке
+     */
+    @GetMapping("/findFlight/{str}")
+    /* @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")*/
+    public List<FlightRoleUserDTO> findFlight(@PathVariable("str") String str) {
+        FlightRoleUserDTO flightsDTO = new FlightRoleUserDTO();
+        return flightsDTO.flightListToFlightClientDTOList(flightDAO.findFlights("%" + str + "%"));
+    }
+
+    /**
      * Фильтрация по городам прибытия
      */
     @GetMapping("/City_arrival/{City}")
