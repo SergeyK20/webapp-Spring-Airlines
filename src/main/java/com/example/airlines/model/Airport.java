@@ -7,6 +7,13 @@ import java.util.Set;
 @Entity
 @Table(name = "Airport")
 public class Airport {
+    public Airport() {
+    }
+    public Airport(int id,String nameAirport,City city ) {
+        this.id=id;
+        this.nameAirport = nameAirport;
+        this.airportInTheCity = city;
+    }
     private int id;
     private String nameAirport;
     private City airportInTheCity;

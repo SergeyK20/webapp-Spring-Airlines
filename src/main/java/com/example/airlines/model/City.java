@@ -8,6 +8,9 @@ import java.util.Set;
 @Entity
 @Table(name = "City")
 public class City {
+    public City() {
+    }
+
     private int id;
     private String nameCity;
     private Set<Airport> airports;

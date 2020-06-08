@@ -6,8 +6,8 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
         nameCity:"hello"
     };
 
-    _refreshCityData()
-    function _refreshCityData() {
+    CityData()
+    function CityData() {
         $http({
             method: 'GET',
             url: '/city'
@@ -30,10 +30,10 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
                     $scope.errorMessage = 'Error updating city!';
                     $scope.message = '';
                 });
-        _refreshCityData();
+        CityData();
     }
 
-    $scope.getCity = function () {
+    $scope.getCity = function (id) {
         var id = $scope.city.id;
         CityService.getCity($scope.city.id)
             .then(function success(response) {
@@ -50,7 +50,7 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
                         $scope.errorMessage = "Error getting customer!";
                     }
                 });
-        CustomerData()
+        CityData();
     }
 
     $scope.addCity = function () {
@@ -69,7 +69,7 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
             $scope.errorMessage = 'Please enter a name!';
             $scope.message = '';
         }
-        _refreshCityData();
+        CityData();
     }
 
     $scope.deleteCity = function () {
@@ -83,7 +83,7 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
                     $scope.errorMessage = 'Error deleting city!';
                     $scope.message='';
                 })
-        _refreshCityData();
+        CityData();
     }
 
 

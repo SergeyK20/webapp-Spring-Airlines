@@ -8,52 +8,36 @@
           crossorigin="anonymous">
 </head>
 <body class="container-fluid"ng-app="FlightsController"ng-controller="FlightsCtrl">
-<nav>
-<div sec:authorize="hasAuthority('ADMIN')">
-    <ul class="nav nav-pills  nav-tabs">
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <ul class="navbar-nav mr-auto  nav-pills nav">
         <li class="nav-item" >
             <a class="nav-link active" href="/">Booking</a>
         </li>
-        <li  class="nav-item" >
-            <a class="nav-link" href="/flights.html">Flights</a>
+        <li  class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+            <a class="nav-link" href="/flights.html" >Flights</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/airports.html">Airports</a>
+            <a class="nav-link" href="/airports.html" sec:authorize="hasAuthority('ADMIN')">Airports</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/city.html">City</a>
+            <a class="nav-link" href="/city.html" sec:authorize="hasAuthority('ADMIN')">City</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/aircraft.html">Aircraft</a>
+            <a class="nav-link" href="/aircraft.html" sec:authorize="hasAuthority('ADMIN')">Aircraft</a>
         </li>
-        <a class="btn btn-outline-secondary" href="/logout">logout</a>
-        <h3  sec:authentication="name" align="left"></h3>
-        </ul>
-
-</div >
-<div  sec:authorize="hasAuthority('USER')">
-    <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
-        <li class="nav-item" >
-            <a class="nav-link active" href="/">Booking</a>
-        </li>
-        <a class="btn btn-outline-secondary" href="/logout">logout</a>
-        <h3  sec:authentication="name" align="right"></h3>
     </ul>
-</div>
-<div  sec:authorize="hasAuthority('MANAGER')">
-    <ul class="nav nav-pills nav-fil flex-sm-row nav-tabs">
-        <li class="nav-item" >
-            <a class="nav-link active" href="/">Booking</a>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <h3  sec:authentication="name" align="left"></h3>
         </li>
-        <a class="btn btn-outline-secondary" href="/logout">logout</a>
-        <h3  sec:authentication="name" align="right"></h3>
+        <li class="nav-item">
+            <a class="btn btn-outline-secondary" href="/logout">logout</a>
+        </li>
     </ul>
-</div>
 </nav>
 <div class="container">
     <table class="table-striped container-fluid" align="center">
         <thead>
-        <th>id</th>
         <th>numFlight</th>
         <th>Airport depart</th>
         <th>Airport arrival</th>
@@ -65,7 +49,6 @@
         </thead>
         <tbody class="table-bordered">
         <tr ng-repeat="flight in flights">
-            <td>{{flight.idFlight}}</td>
             <td>{{flight.numFlight}}</td>
             <td>{{flight.airportsDeparture.nameAirport}}</td>
             <td>{{flight.airportsArrival.nameAirport}}</td>

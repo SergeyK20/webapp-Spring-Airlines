@@ -9,6 +9,8 @@ import java.util.Set;
 @Entity
 @Table(name = "Flight")
 public class Flight {
+    public Flight() {
+    }
 
     private int id;
     private String numFlight;
@@ -49,14 +51,12 @@ public class Flight {
 
     @Column(name = "Departure_date")
     @NotNull
-    @Temporal(TemporalType.DATE)
     public LocalDate getDepartureDate() {
         return departureDate;
     }
 
     @Column(name = "Departure_time")
     @NotNull
-    @Temporal(TemporalType.TIME)
     public LocalTime getDepartureTime() {
         return departureTime;
     }

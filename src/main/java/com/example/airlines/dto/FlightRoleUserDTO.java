@@ -5,6 +5,8 @@ import com.example.airlines.model.Flight;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +18,8 @@ public class FlightRoleUserDTO {
     private String numFlight;
     private AirportDTO airportDeparture;
     private AirportDTO airportArrival;
-    private Date departureDate;
-    private Time departureTime;
+    private LocalDate departureDate;
+    private LocalTime departureTime;
     private AircraftDTO aircraft;
     private double price;
 
@@ -94,19 +96,19 @@ public class FlightRoleUserDTO {
         this.airportArrival = airportArrival;
     }
 
-    public Date getDepartureDate() {
+    public LocalDate getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(LocalDate departureDate) {
         this.departureDate = departureDate;
     }
 
-    public Time getDepartureTime() {
+    public LocalTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(Time departureTime) {
+    public void setDepartureTime(LocalTime departureTime) {
         this.departureTime = departureTime;
     }
 

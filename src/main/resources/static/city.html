@@ -1,33 +1,50 @@
 <!DOCTYPE html>
-<html lang="en"xmlns:th="http://www.thymeleaf.org"xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="en"xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
+    <script>
+        function disp(form) {
+            if (form.style.display == "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
     <meta charset="UTF-8">
     <title>Booking.city</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet"
           crossorigin="anonymous">
 </head>
 <body class="container-fluid" ng-app="app" ng-controller="CityCtrl" >
-<div sec:authorize="hasAuthority('ADMIN')">
-    <ul class="nav nav-pills  nav-tabs">
-        <li class="nav-item" >
-            <a class="nav-link active" href="/">Booking</a>
-        </li>
-        <li  class="nav-item" >
-            <a class="nav-link" href="/flights.html">Flights</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/airports.html">Airports</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/user.html">User</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/city.html">City</a>
-        </li>
-        <a class="btn btn-outline-secondary" href="/logout">logout</a>
-        <h3  sec:authentication="name" align="left">name</h3>
-    </ul>
-</div >
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Booking</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="flights.html">Flights</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="airports.html">Airports</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/aircraft.html">Aircraft</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="city.html">City</a>
+            </li>
+        </ul >
+        <ul class="navbar-nav">
+            <li class=nav-item">
+                <h2 sec:authentication="name" align="left"> </h2>
+            </li>
+            <li class=nav-item">
+                <a class="btn btn-outline-secondary" href="/logout">logout</a>
+            </li>
+        </ul>
+    </nav>
+<form id="form1" style="display: none;">
 <div class="container" align="center">
     <p style="color: green">{{message}}</p>
     <p style="color: red">{{errorMessage}}</p>
@@ -44,18 +61,21 @@
     <a ng-click="updateCity(city.id,city.nameCity)"class="btn btn-outline-secondary">Update City</a>
     <a ng-click="addCity(city.nameCity)"class="btn btn-outline-success">Add City</a>
     <a ng-click="deleteCity(city.id)"class="btn btn-outline-danger" >Delete City</a>
-    <a ng-click="getCity(city.id)"class="btn btn-outline-secondary">Get City</a>
 </div>
+</form>
 <div class="container mt-5" >
+    <a  class="btn btn-outline-secondary" value="update" onclick="disp(document.getElementById('form1'))">redact</a>
     <table class="table table-striped table-bordered" style="width:100%">
         <thead>
         <th>id  City </th>
         <th>name City</th>
+        <th>        </th>
         </thead>
         <tbody class="table-bordered">
         <tr ng-repeat="city in cities">
             <td>{{city.id}}</td>
             <td>{{city.nameCity}}</td>
+            <td><a ng-click="getCity(city.id)"class="btn btn-outline-secondary">Get City</a> </td>
         </tr>
         </tbody>
     </table>

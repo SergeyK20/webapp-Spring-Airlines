@@ -2,18 +2,19 @@ var app = angular.module("Airports",[])
 
 app.controller("AirportsCtrl", function($scope,$http,AirportService){
     $scope.airports=[];
-    let city;
-    $scope.airport={
-        id: 1,
-        nameAirport:"Kurumoch",
-        airportInTheCity:city
-    };
-
-    $scope.cities=[];
     $scope.city={
         id: 1,
         nameCity:"hello"
     };
+    city ={id: 1,
+        nameCity:"hello"};
+    $scope.airport={
+        id: 1,
+        nameAirport:"Kurumoch",
+        airportInTheCity: city
+    };
+    $scope.cities=[];
+
     AirportsData()
     _refreshCityData()
     function _refreshCityData() {

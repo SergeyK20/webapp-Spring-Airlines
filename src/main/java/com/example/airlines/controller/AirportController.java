@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/airports")
-@PreAuthorize("hasRole('ADMIN')")
 public class AirportController {
 
     private AirportDAO airportDao;
@@ -72,6 +71,7 @@ public class AirportController {
      *                }
      */
     @PostMapping
+    @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     public AirportDTO saveAirport(@RequestBody Airport airport) {
         AirportDTO airportDTO = new AirportDTO();
