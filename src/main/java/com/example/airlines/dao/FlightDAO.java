@@ -31,5 +31,12 @@ public interface FlightDAO extends JpaRepository<Flight, Integer> {
     @Query("Select f from Flight f where f.airportDeparture.airportInTheCity.nameCity = :city")
     List<Flight> findByCityDeparture(@Param("city") String city);
 
-
+    @Query("Select f from Flight f where f.airportArrival.nameAirport like (:str) or " +
+            "                            f.airportDeparture.nameAirport like (:str) or " +
+            "                            f.aircraft.nameAircraft like (:str) or " +
+            "                            f.numFlight like (:str) or " +
+            "                            f.departureDate like (:str) or " +
+            "                            f.departureTime like (:str) or " +
+            "                            f.price like (:str)")
+    List<Flight> findFlights(@Param("str") String str);
 }

@@ -6,11 +6,14 @@ import com.example.airlines.exceptions.CreateException;
 import com.example.airlines.exceptions.ExceptionWhenWorkingWithDB;
 import com.example.airlines.exceptions.IdSearchException;
 import com.example.airlines.model.AccountUser;
+import com.example.airlines.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -106,4 +109,29 @@ public class AccountController {
             throw new ExceptionWhenWorkingWithDB("Error when deleted element");
         }
     }
+
+    /**
+     *
+     * @param id роли, которая будет изменяться
+     * @param role передавать нужно простой текст не json объект
+     */
+    @PutMapping("/roleUpdate/{id}")
+    public void roleUpdate(@PathVariable("id") int id, @RequestBody String role){
+        try {
+            if (accountUserDAO.findById(id).isPresent()) {
+                accountUserDAO.findById(id).map(accountUser -> {
+                    Set<Role> roleSet = new HashSet<>();
+                    roleSet.add(Role.valueOf(role));
+                    accountUser.setRoles(roleSet);
+                    return accountUserDAO.save(accountUser);
+                });
+            } else {
+                throw new IdSearchException("Did not found element on update");
+            }
+        } catch (Exception ex){
+            throw new CreateException("Role not updated");
+        }
+    }
+
+
 }

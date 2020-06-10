@@ -93,6 +93,14 @@ public class AccountUser implements UserDetails {
         this.roles = roles;
     }
 
+    public void addRole(Role role){
+        roles.add(role);
+    }
+
+    public void deleteRole(Role role){
+        roles.remove(role);
+    }
+
     @Override
     @Transient
     public Collection<? extends GrantedAuthority> getAuthorities() {

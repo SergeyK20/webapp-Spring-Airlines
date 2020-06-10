@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService)
                 .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
+    
     @Bean
     public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();

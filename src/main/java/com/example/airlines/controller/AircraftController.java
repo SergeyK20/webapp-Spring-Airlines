@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/aircraft")
+/*@PreAuthorize("hasRole('ADMIN')")*/
 public class AircraftController {
 
     private AircraftDAO aircraftDAO;
