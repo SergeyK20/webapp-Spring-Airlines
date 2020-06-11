@@ -8,6 +8,7 @@ import com.example.airlines.dto.UserFlightIdAndPaymentDTO;
 import com.example.airlines.model.AccountUser;
 import com.example.airlines.model.Flight;
 import com.example.airlines.model.UserFlight;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,6 @@ public class UserFlightController {
         this.flightDAO = flightDAO;
     }
 
-
     @GetMapping
     public List<UserFlightDTO> findAll() {
         UserFlightDTO userFlightDTO = new UserFlightDTO();
@@ -39,10 +39,11 @@ public class UserFlightController {
         return userFlightDTO.userFlightListInUserFlightDTOList(userFlightDAO.findByFlight(id));
     }
 
-    @GetMapping("/user/{Id}")
-    public List<UserFlightDTO> findAllByIdUser(@PathVariable("Id") int id) {
+    @GetMapping("/user")
+
+    public List<UserFlightDTO> findAllByIdUser(@AuthenticationPrincipal AccountUser user) {
         UserFlightDTO userFlightDTO = new UserFlightDTO();
-        return userFlightDTO.userFlightListInUserFlightDTOList(userFlightDAO.findByUser(id));
+        return userFlightDTO.userFlightListInUserFlightDTOList(userFlightDAO.findByUser(user.getId()));
     }
 
     @PostMapping("/booking")

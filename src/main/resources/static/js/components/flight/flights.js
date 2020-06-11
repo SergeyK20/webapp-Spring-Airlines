@@ -100,10 +100,10 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
 
     $scope.getFlight = function () {
         var id = $scope.airport.id;
-        AirportService.getFlight($scope.airport.id)
+        AirportService.getFlight($scope.flight.id)
             .then(function success(response) {
-                    $scope.airport = response.data;
-                    $scope.airport.id = id;
+                    $scope.flight = response.data;
+                    $scope.flight.id = id;
                     $scope.message = '';
                     $scope.errorMessage = '';
                 },
@@ -137,11 +137,11 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
         FlightsData();
     }
 
-    $scope.deleteFlight = function () {
-        FlightService.deleteFlight($scope.airport.id)
+    $scope.deleteFlight = function (index) {
+        FlightService.deleteFlight(index)
             .then (function success(response){
                     $scope.message = 'Flight deleted!';
-                    $scope.airport = null;
+                    $scope.flight = null;
                     $scope.errorMessage='';
                 },
                 function error(response){

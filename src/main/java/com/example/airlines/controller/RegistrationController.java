@@ -4,6 +4,7 @@ package com.example.airlines.controller;
 import com.example.airlines.dao.AccountUserDAO;
 import com.example.airlines.model.AccountUser;
 import com.example.airlines.model.Role;
+import com.example.airlines.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,8 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
+    @Autowired
+    UserService userService;
 
     @Autowired
     private AccountUserDAO accountUserDAO;
@@ -35,7 +38,7 @@ public class RegistrationController {
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
-        accountUserDAO.save(user);
+        userService.save(user);
 
         return "redirect:/login";
     }

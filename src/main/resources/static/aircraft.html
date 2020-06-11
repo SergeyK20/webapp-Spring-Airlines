@@ -13,10 +13,18 @@
     </script>
     <meta charset="UTF-8">
     <title>Title</title>
+    <bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver" />
+        <property name="additionalDialects">
+            <set>
+                <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect" />
+            </set>
+        </property>
+    </bean>
 </head>
 <body ng-app="aircraft" ng-controller="AircraftCtrl">
-<nav class="navbar navbar-dark bg-dark">
-    <ul class="nav nav-pills">
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <ul class="navbar-nav mr-auto  nav-pills nav">
         <li class="nav-item" >
             <a class="nav-link " href="/">Booking</a>
         </li>
@@ -35,7 +43,7 @@
     </ul>
     <ul  class="nav nav-pills ">
         <li class="nav-item"><a class="btn btn-outline-secondary" href="/logout">logout</a></li>
-        <li class="nav-item"><h3  sec:authentication="name" align="left">name</h3></li>
+        <li class="nav-item"><h3 sec:authentication="name" align="left"></h3></li>
     </ul>
 </nav>
 <form id="form1" style="display: none;">
@@ -58,8 +66,6 @@
     </table>
     <a ng-click="updateAircraft(aircraft.id,aircraft.nameAircraft,aircraft.numberSeatsAircraft)"class="btn btn-outline-secondary">Update Aircraft</a>
     <a ng-click="addAircraft(aircraft.nameAircraft,aircraft.numberSeatsAircraft)"class="btn btn-outline-success">Add Aircraft</a>
-    <a ng-click="deleteAircraft(aircraft.id)"class="btn btn-outline-danger" >Delete Aircraft</a>
-    <a ng-click="getAircraft(aircraft.id)"class="btn btn-outline-secondary">Get Aircraft</a>
 </div>
 </form>
 <div class="container mt-5" >
@@ -73,6 +79,9 @@
         <tr ng-repeat="aircraft in aircrafts">
             <td>{{aircraft.nameAircraft}}</td>
             <td>{{aircraft.numberSeatsAircraft}}</td>
+            <td>
+                <button id="remove" ng-click="deleteAircraft(aircraft.id)" class= "btn btn-danger">Delete</button>
+            </td>
         </tr>
         </tbody>
     </table>

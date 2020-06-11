@@ -62,7 +62,8 @@ public class AirportController {
     }
 
     @PutMapping("/{Id}")
-    public void updateAirport(@PathVariable("Id") int id, @RequestBody Airport airport) {
+    public void updateAirport(@PathVariable("Id") int id, @RequestBody String airportString) throws JSONException {
+        Airport airport = AirportParser.airportParser(airportString);
         airportDao.findById(id).map(airports -> {
             airports.setNameAirport(airport.getNameAirport());
             if(cityDAO.findById(airport.getAirportInTheCity().getId()).isPresent()) {

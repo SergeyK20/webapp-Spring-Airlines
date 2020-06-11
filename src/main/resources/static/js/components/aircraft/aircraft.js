@@ -33,6 +33,7 @@ app.controller("AircraftCtrl", function ($scope, $http, AircraftService) {
                     $scope.message = '';
                 });
         AircraftData();
+        setTimeout("location.reload(true);",1)
     }
 
     $scope.getAircraft = function () {
@@ -71,10 +72,11 @@ app.controller("AircraftCtrl", function ($scope, $http, AircraftService) {
             $scope.message = '';
         }
         AircraftData();
+        setTimeout("location.reload(true);",1)
     }
 
-    $scope.deleteAircraft = function () {
-        AircraftService.deleteAircraft($scope.aircraft.id)
+    $scope.deleteAircraft = function (index) {
+        AircraftService.deleteAircraft(index)
             .then(function success(response) {
                     $scope.message = 'Aircraft deleted!';
                     $scope.aircraft = null;
@@ -85,6 +87,7 @@ app.controller("AircraftCtrl", function ($scope, $http, AircraftService) {
                     $scope.message = '';
                 })
         AircraftData();
+        setTimeout("location.reload(true);",1)
     }
 
 

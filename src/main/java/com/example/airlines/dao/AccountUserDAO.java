@@ -18,6 +18,8 @@ public interface AccountUserDAO extends JpaRepository<AccountUser, Integer> {
     @Override
     List<AccountUser> findAll();
 
+    AccountUser findById(Long i);
+
     @Override
     Optional<AccountUser> findById(Integer integer);
 

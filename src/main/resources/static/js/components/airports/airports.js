@@ -44,7 +44,7 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
         );
     };
     $scope.updateAirport = function () {
-        AirportService.updateAirport($scope.airport.nameAirport,$scope.airport.airportInTheCity)
+        AirportService.updateAirport($scope.airport.id,$scope.airport.nameAirport,$scope.airport.airportInTheCity)
             .then(function success(response){
                     $scope.message = 'Airport data updated!';
                     $scope.errorMessage = '';
@@ -53,12 +53,13 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
                     $scope.errorMessage = 'Error updating airport!';
                     $scope.message = '';
                 });
+        setTimeout("location.reload(true);",1)
         AirportsData();
     }
 
-    $scope.getAirport = function () {
-        var id = $scope.airport.id;
-        AirportService.getAirport($scope.airport.id)
+    $scope.getAirport = function (index) {
+        var id = index;
+        AirportService.getAirport(index)
             .then(function success(response) {
                     $scope.airport = response.data;
                     $scope.airport.id = id;
@@ -92,11 +93,12 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
             $scope.errorMessage = 'Please enter a name!';
             $scope.message = '';
         }
+        setTimeout("location.reload(true);",1)
         AirportsData();
     }
 
-    $scope.deleteAirport = function () {
-        AirportService.deleteAirport($scope.airport.id)
+    $scope.deleteAirport = function (index) {
+        AirportService.deleteAirport(index)
             .then (function success(response){
                     $scope.message = 'Airport deleted!';
                     $scope.airport = null;
@@ -107,7 +109,8 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
                     $scope.message='';
                 })
         AirportsData();
-    }
+        setTimeout("location.reload(true);",1)
+    };
 
 })
 app.service('AirportService',['$http', function ($http) {
@@ -139,7 +142,8 @@ app.service('AirportService',['$http', function ($http) {
         return $http({
             method: 'PUT',
             url: '/airports/'+id,
-            data: {nameAirport:nameAirport,
+            data: {id:id,
+                nameAirport:nameAirport,
                 airportInTheCity:airportInTheCity}
         })
     }

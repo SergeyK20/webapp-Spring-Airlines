@@ -31,6 +31,7 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
                     $scope.message = '';
                 });
         CityData();
+        setTimeout("location.reload(true);",1)
     }
 
     $scope.getCity = function (id) {
@@ -70,10 +71,11 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
             $scope.message = '';
         }
         CityData();
+        setTimeout("location.reload(true);",1)
     }
 
-    $scope.deleteCity = function () {
-        CityService.deleteCity($scope.city.id)
+    $scope.deleteCity = function (index) {
+        CityService.deleteCity(index)
             .then (function success(response){
                     $scope.message = 'City deleted!';
                     $scope.city = null;
@@ -84,6 +86,7 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
                     $scope.message='';
                 })
         CityData();
+        setTimeout("location.reload(true);",1)
     }
 
 
