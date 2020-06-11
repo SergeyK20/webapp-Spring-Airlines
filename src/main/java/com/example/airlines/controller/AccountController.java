@@ -2,6 +2,7 @@ package com.example.airlines.controller;
 
 import com.example.airlines.dao.AccountUserDAO;
 import com.example.airlines.dto.AccountRoleUserDTO;
+import com.example.airlines.dto.RoleDTO;
 import com.example.airlines.exceptions.CreateException;
 import com.example.airlines.exceptions.ExceptionWhenWorkingWithDB;
 import com.example.airlines.exceptions.IdSearchException;
@@ -9,6 +10,7 @@ import com.example.airlines.model.AccountUser;
 import com.example.airlines.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -111,17 +113,19 @@ public class AccountController {
     }
 
     /**
-     *
-     * @param id роли, которая будет изменяться
-     * @param role передавать нужно простой текст не json объект
+     * Пример:
+     * {
+     *     "role" : "ADMIN"
+     * }
+     * Метод не добавляет, а изменет значеи роли пользователя
      */
-    @PutMapping("/roleUpdate/{id}")
-    public void roleUpdate(@PathVariable("id") int id, @RequestBody String role){
+    @PutMapping("/roleUpdate")
+    public void roleUpdate(@AuthenticationPrincipal AccountUser user, @RequestBody RoleDTO role){
         try {
-            if (accountUserDAO.findById(id).isPresent()) {
-                accountUserDAO.findById(id).map(accountUser -> {
+            if (accountUserDAO.findById(user.getId()).isPresent()) {
+                accountUserDAO.findById(user.getId()).map(accountUser -> {
                     Set<Role> roleSet = new HashSet<>();
-                    roleSet.add(Role.valueOf(role));
+                    roleSet.add(Role.valueOf(role.getRole()));
                     accountUser.setRoles(roleSet);
                     return accountUserDAO.save(accountUser);
                 });

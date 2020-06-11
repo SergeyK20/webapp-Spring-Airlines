@@ -18,4 +18,6 @@ public interface UserFlightDAO extends JpaRepository<UserFlight, Integer> {
 
     @Query("Select U_f from UserFlight U_f where U_f.user.id = :Id")
     List<UserFlight> findByUser(@Param("Id") Integer id);
+
+
 }

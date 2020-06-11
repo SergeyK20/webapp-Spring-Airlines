@@ -3,8 +3,12 @@ package com.example.airlines.controller;
 import com.example.airlines.dao.AccountUserDAO;
 import com.example.airlines.dao.FlightDAO;
 import com.example.airlines.dao.UserFlightDAO;
+import com.example.airlines.dto.FlightsOfThisAccountDTO;
 import com.example.airlines.dto.UserFlightDTO;
-import com.example.airlines.dto.UserFlightIdAndPaymentDTO;
+import com.example.airlines.dto.FlightIdDTO;
+import com.example.airlines.dto.UsersOfThisFlightDTO;
+import com.example.airlines.exceptions.CreateException;
+import com.example.airlines.exceptions.ExceptionWhenWorkingWithDB;
 import com.example.airlines.model.AccountUser;
 import com.example.airlines.model.Flight;
 import com.example.airlines.model.UserFlight;
@@ -27,53 +31,79 @@ public class UserFlightController {
         this.flightDAO = flightDAO;
     }
 
+    /**
+     * Возвращает все забронированные рейсы и пользователей, котрые забронировали рейс
+     */
     @GetMapping
     public List<UserFlightDTO> findAll() {
         UserFlightDTO userFlightDTO = new UserFlightDTO();
         return userFlightDTO.userFlightListInUserFlightDTOList(userFlightDAO.findAll());
     }
 
+    /**
+     * Получаем все аккаунты, которые были зарегистрированные на этот рейс
+     * @param id индентификатор рейса
+     */
     @GetMapping("/flight/{Id}")
-    public List<UserFlightDTO> findAllByIdFlight(@PathVariable("Id") int id) {
-        UserFlightDTO userFlightDTO = new UserFlightDTO();
-        return userFlightDTO.userFlightListInUserFlightDTOList(userFlightDAO.findByFlight(id));
+    public List<UsersOfThisFlightDTO> findAllByIdFlight(@PathVariable("Id") int id) {
+        UsersOfThisFlightDTO usersOfThisFlightDTO = new UsersOfThisFlightDTO();
+        return usersOfThisFlightDTO.usersOfThisFlightDTOList(userFlightDAO.findByFlight(id));
     }
 
+
+    /**
+     * Получаем список забронированных рейсов отдельного пользователя
+     * @param user информация о пользователе
+     */
     @GetMapping("/user")
-
-    public List<UserFlightDTO> findAllByIdUser(@AuthenticationPrincipal AccountUser user) {
-        UserFlightDTO userFlightDTO = new UserFlightDTO();
-        return userFlightDTO.userFlightListInUserFlightDTOList(userFlightDAO.findByUser(user.getId()));
+    public List<FlightsOfThisAccountDTO> findAllByIdUser(@AuthenticationPrincipal AccountUser user) {
+        FlightsOfThisAccountDTO flightsOfThisAccountDTO = new FlightsOfThisAccountDTO();
+        return flightsOfThisAccountDTO.flightsOfThisAccountDTOList(userFlightDAO.findByUser(user.getId()));
     }
 
+    /**
+     * Осуществляет бронь рейса
+     * Пример:
+     * {
+     *     "id": 1
+     * }
+     */
     @PostMapping("/booking")
-    public UserFlightDTO saveUserFlight(@RequestBody UserFlightIdAndPaymentDTO element) {
+    public UserFlightDTO saveUserFlight(@AuthenticationPrincipal AccountUser user,@RequestBody FlightIdDTO element) {
         UserFlightDTO userFlightDTO = new UserFlightDTO();
         UserFlight userFlight = new UserFlight();
-        if (!flightDAO.findById(element.getIdFlight()).isPresent() || !accountUserDAO.findById(element.getIdUser()).isPresent()) {
-            return null;
+        if (!flightDAO.findById(element.getId()).isPresent() || !accountUserDAO.findById(user.getId()).isPresent()) {
+            throw  new CreateException("Error creating");
         } else {
-            Flight flight = flightDAO.findById(element.getIdFlight()).get();
-            AccountUser accountUser = accountUserDAO.findById(element.getIdUser()).get();
+            Flight flight = flightDAO.findById(element.getId()).get();
+            AccountUser accountUser = accountUserDAO.findById(user.getId()).get();
             userFlight.setUser(accountUser);
             userFlight.setFlight(flight);
-            userFlight.setPayment(element.isPayment());
+            userFlight.setPayment(false);
             if (flight.getAccountUsers().size() < flight.getAircraft().getNumberSeatsAircraft()) {
                 return userFlightDTO.userFlightInUserFlightDTO(userFlightDAO.save(userFlight));
             } else {
                 // переполнение заказов на рейс
-                return null;
+                throw  new CreateException("Error creating");
             }
         }
 
     }
 
-    @DeleteMapping("/remove_booking/{Id}")
-    public void removeUserFlight(@PathVariable("Id") int id) {
-        if (userFlightDAO.findById(id).isPresent()) {
-            userFlightDAO.delete(userFlightDAO.findById(id).get());
+    /**
+     * Пример:
+     * {
+     *     "id": 1
+     * }
+     * Удаляет бронь с рейса
+     * @param element передается в этом объекте Id UserFlight
+     */
+    @DeleteMapping("/remove_booking")
+    public void removeUserFlight(@RequestBody FlightIdDTO element) {
+        if (userFlightDAO.findById(element.getId()).isPresent()) {
+            userFlightDAO.deleteById(element.getId());
         } else {
-            // что то сделать если не нашел
+            throw new ExceptionWhenWorkingWithDB("Error deleted");
         }
     }
 
