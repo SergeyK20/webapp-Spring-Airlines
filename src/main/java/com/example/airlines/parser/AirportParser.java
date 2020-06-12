@@ -10,12 +10,11 @@ public class AirportParser {
         Airport airport = new Airport();
         JSONObject jsonObject = new JSONObject(airportString);
         String nameAirport = jsonObject.getString("nameAirport");
-        JSONObject cityJsonObject = new JSONObject((String)jsonObject.get("airportInTheCity"));
+        JSONObject cityJsonObject = new JSONObject(jsonObject.getString("airportInTheCity"));
         int idCity = cityJsonObject.getInt("id");
         airport.setNameAirport(nameAirport);
         airport.setAirportInTheCity(new City());
         airport.getAirportInTheCity().setId(idCity);
         return airport;
     }
-
 }
