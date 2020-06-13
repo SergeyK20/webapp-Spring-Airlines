@@ -3,8 +3,6 @@ package com.example.airlines.dto;
 
 import com.example.airlines.model.Flight;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ import java.util.List;
  * Класс рейса передающийся клиенту, без аккаунтов
  */
 public class FlightRoleUserDTO {
-    private int idFlight;
+    private int id;
     private String numFlight;
     private AirportDTO airportDeparture;
     private AirportDTO airportArrival;
@@ -50,7 +48,7 @@ public class FlightRoleUserDTO {
 
     public FlightRoleUserDTO addValuesInFlightClientDTO(Flight flight) {
         FlightRoleUserDTO flightRoleUserDTO = new FlightRoleUserDTO();
-        flightRoleUserDTO.setIdFlight(flight.getId());
+        flightRoleUserDTO.setId(flight.getId());
         AircraftDTO aircraftDTO = new AircraftDTO(flight.getAircraft().getId(),
                                                   flight.getAircraft().getNameAircraft(),
                                 flight.getAircraft().getNumberSeatsAircraft() - flight.getAccountUsers().size());
@@ -64,12 +62,12 @@ public class FlightRoleUserDTO {
         return flightRoleUserDTO;
     }
 
-    public int getIdFlight() {
-        return idFlight;
+    public int getId() {
+        return id;
     }
 
-    public void setIdFlight(int idFlight) {
-        this.idFlight = idFlight;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNumFlight() {
