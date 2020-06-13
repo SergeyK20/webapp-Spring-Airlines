@@ -20,7 +20,7 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
         airportInTheCity:city
     };
     $scope.flight = {
-        id: "1",
+        idFlight: "1",
         numFlight: "s12324",
         airportDeparture: airport1,
         airportArrival: airport2,
@@ -86,7 +86,7 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
             }
         );
     };$scope.updateFlight = function () {
-        AirportService.updateFlight($scope.flight.id,$scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
+        AirportService.updateFlight($scope.flight.idFlight,$scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
             .then(function success(response){
                     $scope.message = 'Flight data updated!';
                     $scope.errorMessage = '';
@@ -95,32 +95,11 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
                     $scope.errorMessage = 'Error updating Flight!';
                     $scope.message = '';
                 });
-        AirportsData();
-    }
-
-    $scope.getFlight = function () {
-        var id = $scope.airport.id;
-        AirportService.getFlight($scope.flight.id)
-            .then(function success(response) {
-                    $scope.flight = response.data;
-                    $scope.flight.id = id;
-                    $scope.message = '';
-                    $scope.errorMessage = '';
-                },
-                function error(response) {
-                    $scope.message = '';
-                    if (response.status === 404) {
-                        $scope.errorMessage = 'Flight not found!';
-                    } else {
-                        $scope.errorMessage = "Error getting Flight!";
-                    }
-                });
-        FlightsData();
     }
 
     $scope.addFlight = function () {
-        if ($scope.airport != null ) {
-           FlightService.addFlight($scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
+        if ($scope.flight.departureDate != null ) {
+            FlightService.addFlight($scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
                 .then (function success(response){
                         $scope.message = 'Flight added!';
                         $scope.errorMessage = '';
@@ -183,12 +162,12 @@ app.service('FlightService', ['$http', function ($http) {
         })
     }
 
-    this.updateFlight = function updateFlight(id, numFlight, airportDeparture, airportArrival, departureDate, departureTime, aircraft, price) {
+    this.updateFlight = function updateFlight(idFlight, numFlight, airportDeparture, airportArrival, departureDate, departureTime, aircraft, price) {
         return $http({
             method: 'PUT',
-            url: '/flights/' + id,
+            url: '/flights/' + idFlight,
             data: {
-                id: id,
+                idFlight: idFlight,
                 numFlight: numFlight,
                 airportDeparture: airportDeparture,
                 airportArrival: airportArrival,

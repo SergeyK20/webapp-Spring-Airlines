@@ -57,26 +57,6 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
         AirportsData();
     }
 
-    $scope.getAirport = function (index) {
-        var id = index;
-        AirportService.getAirport(index)
-            .then(function success(response) {
-                    $scope.airport = response.data;
-                    $scope.airport.id = id;
-                    $scope.message = '';
-                    $scope.errorMessage = '';
-                },
-                function error(response) {
-                    $scope.message = '';
-                    if (response.status === 404) {
-                        $scope.errorMessage = 'Airport not found!';
-                    } else {
-                        $scope.errorMessage = "Error getting airport!";
-                    }
-                });
-        AirportsData();
-    }
-
     $scope.addAirport = function () {
         if ($scope.airport != null ) {
             AirportService.addAirport($scope.airport.nameAirport, $scope.airport.airportInTheCity)
