@@ -136,6 +136,42 @@ public class AccountController {
             throw new CreateException("Role not updated");
         }
     }
+    @PutMapping("/updateAccess/{Id}")
+    public void updateAccess(@PathVariable("Id") int id){
+        RoleDTO roleDTO = new RoleDTO();roleDTO.setRole(String.valueOf(Role.ADMIN));
+        try {
+            if (accountUserDAO.findById(id).isPresent()) {
+                accountUserDAO.findById(id).map(accountUser -> {
+                    Set<Role> roleSet = new HashSet<>();
+                    roleSet.add(Role.valueOf(roleDTO.getRole()));
+                    accountUser.setRoles(roleSet);
+                    return accountUserDAO.save(accountUser);
+                });
+            } else {
+                throw new IdSearchException("Did not found element on update");
+            }
+        } catch (Exception ex){
+            throw new CreateException("Role not updated");
+        }
+    }
+    @PutMapping("/reducingAccess/{Id}")
+    public void reducingAccess(@PathVariable("Id") int id){
+        RoleDTO roleDTO = new RoleDTO();roleDTO.setRole(String.valueOf(Role.USER));
+        try {
+            if (accountUserDAO.findById(id).isPresent()) {
+                accountUserDAO.findById(id).map(accountUser -> {
+                    Set<Role> roleSet = new HashSet<>();
+                    roleSet.add(Role.valueOf(roleDTO.getRole()));
+                    accountUser.setRoles(roleSet);
+                    return accountUserDAO.save(accountUser);
+                });
+            } else {
+                throw new IdSearchException("Did not found element on update");
+            }
+        } catch (Exception ex){
+            throw new CreateException("Role not updated");
+        }
+    }
 
 
 }

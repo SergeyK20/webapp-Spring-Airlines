@@ -1,5 +1,7 @@
-var user = angular.module('user', []);
-user.controller("UserCtrl", function ($scope, $http, UserService) {
+var app = angular.module('User', []);
+app.controller("UserCtrl", function ($scope, $http, UserService) {
+    let Up ="ADMIN";
+    let Down ="USER";
     $scope.accounts = [];
     $scope.account = {
         idAccount:"1",
@@ -21,59 +23,50 @@ user.controller("UserCtrl", function ($scope, $http, UserService) {
         );
     };
 
-
-    $scope.updateUser = function () {
-        UserService.updateUser($scope.account.idAccount)
-            .then(function success(response) {
-                    $scope.message = 'User data updated!';
-                    $scope.errorMessage = '';
+    $scope.updateAccess = function (index) {
+        UserService.updateAccess(index)
+            .then (function success(response){
+                    $scope.message = 'update Access!';
+                    $scope.account = null;
+                    $scope.errorMessage='';
                 },
-                function error(response) {
-                    $scope.errorMessage = 'Error updating user!';
-                    $scope.message = '';
-                });
-
-    }
-
-    $scope.getUser = function () {
-        var idAccount = $scope.account.idAccount;
-        UserService.getUser($scope.account.idAccount)
-            .then(function success(response) {
-                    $scope.account = response.data;
-                    $scope.account.idAccount = idAccount;
-                    $scope.message = '';
-                    $scope.errorMessage = '';
-                },
-                function error(response) {
-                    $scope.message = '';
-                    if (response.status === 404) {
-                        $scope.errorMessage = 'User not found!';
-                    } else {
-                        $scope.errorMessage = "Error getting user!";
-                    }
-                });
+                function error(response){
+                    $scope.errorMessage = 'Error update!';
+                    $scope.message='';
+                })
         UserData()
-    }
+        setTimeout("location.reload(true);",1)
+    };
 
+    $scope.reducingAccess = function (index) {
+        UserService.reducingAccess(index)
+            .then (function success(response){
+                    $scope.message = 'update Access!';
+                    $scope.account = null;
+                    $scope.errorMessage='';
+                },
+                function error(response){
+                    $scope.errorMessage = 'Error update!';
+                    $scope.message='';
+                })
+        UserData()
+        setTimeout("location.reload(true);",1)
+    };
 
 });
-user.service('UserService', ['$http', function ($http) {
-
-    this.getUser = function getUser(idAccount) {
-        return $http({
-            method: 'GET',
-            url: '/accounts/' + idAccount
-        });
-    }
+app.service('UserService', ['$http', function ($http) {
 
 
-    this.updateUser = function updateUser(idAccount) {
+    this.updateAccess = function updateAccess(id) {
         return $http({
             method: 'PUT',
-            url: '/accounts/' + idAccount,
-            data: {
-                id:id,
-            }
+            url: '/accounts/updateAccess/' + id,
+        })
+    }
+    this.reducingAccess = function reducingAccess(id) {
+        return $http({
+            method: 'PUT',
+            url: '/accounts/reducingAccess/' + id,
         })
     }
 }]);

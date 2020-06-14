@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <script>
         function disp(form) {
@@ -33,10 +33,20 @@
         <li class="nav-item">
             <a class="nav-link" href="/city.html">City</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/user.html">User</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/reserved.html">Reserved</a>
+        </li>
     </ul>
-    <ul class="nav nav-pills">
-        <li class="nav-item"><a class="btn btn-outline-secondary" href="/logout">logout</a></li>
-       <li class="nav-item"> <h3 sec:authentication="name" align="left">name</h3></li>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <h3 sec:authentication="name" align="left"></h3>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-outline-secondary" href="/logout">logout</a>
+        </li>
     </ul>
 </nav>
 <form id="form1" style="display: none;">
@@ -107,7 +117,6 @@
     <a  class="btn btn-outline-secondary" value="update" onclick="disp(document.getElementById('form1'))">redact</a>
     <table class="table table-striped table-bordered" style="width:100%">
         <thead>
-        <th>idFlight</th>
         <th>numFlight</th>
         <th>Airport depart</th>
         <th>Airport arrival</th>
@@ -120,7 +129,6 @@
         </thead>
         <tbody class="table-bordered">
         <tr ng-repeat="flight in flights">
-            <td>{{flight.idFlight}}</td>
             <td>{{flight.numFlight}}</td>
             <td>{{flight.airportDeparture.nameAirport}}</td>
             <td>{{flight.airportArrival.nameAirport}}</td>

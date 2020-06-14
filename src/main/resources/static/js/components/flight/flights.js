@@ -95,6 +95,7 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
                     $scope.errorMessage = 'Error updating Flight!';
                     $scope.message = '';
                 });
+        setTimeout("location.reload(true);",1)
     }
 
     $scope.addFlight = function () {
@@ -114,6 +115,7 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
             $scope.message = '';
         }
         FlightsData();
+        setTimeout("location.reload(true);",1)
     }
 
     $scope.deleteFlight = function (index) {
@@ -128,6 +130,7 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
                     $scope.message='';
                 })
         FlightsData();
+        setTimeout("location.reload(true);",1)
     }
 
 })

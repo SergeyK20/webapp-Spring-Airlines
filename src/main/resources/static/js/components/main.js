@@ -19,7 +19,12 @@ app.controller("MainCtrl",function ($scope,$http,MainService) {
         airportInTheCity:city
     };
     $scope.flights = [];
-
+    $scope.user_flights=[];
+    $scope.user_flight={
+        id:1,
+        flight:"",
+        payment:true,
+    }
     $scope.flight = {
         id: "1",
         numFlight: "s12324",
@@ -35,10 +40,10 @@ app.controller("MainCtrl",function ($scope,$http,MainService) {
     function MainData() {
         $http({
             method: 'GET',
-            url: '/user_flight/user'
+            url: '/user_flight'
         }).then(
             function (res) { // success
-                $scope.flightsRoleUserDto = res.data.flightRoleUserDto;
+                $scope.user_flights = res.data;
             },
             function (res) { // error
                 console.log("Error: " + res.status + " : " + res.data);
@@ -76,6 +81,7 @@ app.controller("MainCtrl",function ($scope,$http,MainService) {
             $scope.message = '';
         }
         FlightsData();
+        setTimeout("location.reload(true);",1)
     }
 
 })

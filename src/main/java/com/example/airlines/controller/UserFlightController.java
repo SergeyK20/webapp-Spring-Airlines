@@ -34,7 +34,7 @@ public class UserFlightController {
     /**
      * Возвращает все забронированные рейсы и пользователей, котрые забронировали рейс
      */
-    @GetMapping
+    @GetMapping("all")
     public List<UserFlightDTO> findAll() {
         UserFlightDTO userFlightDTO = new UserFlightDTO();
         return userFlightDTO.userFlightListInUserFlightDTOList(userFlightDAO.findAll());
@@ -55,7 +55,7 @@ public class UserFlightController {
      * Получаем список забронированных рейсов отдельного пользователя
      * @param user информация о пользователе
      */
-    @GetMapping("/user")
+    @GetMapping
     public List<FlightsOfThisAccountDTO> findAllByIdUser(@AuthenticationPrincipal AccountUser user) {
         FlightsOfThisAccountDTO flightsOfThisAccountDTO = new FlightsOfThisAccountDTO();
         return flightsOfThisAccountDTO.flightsOfThisAccountDTOList(userFlightDAO.findByUser(user.getId()));
