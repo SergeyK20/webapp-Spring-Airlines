@@ -96,14 +96,26 @@ public class UserFlightController {
      *     "id": 1
      * }
      * Удаляет бронь с рейса
-     * @param element передается в этом объекте Id UserFlight
+     * @param id  элемента в таблице user_flight
      */
-    @DeleteMapping("/remove_booking")
-    public void removeUserFlight(@RequestBody FlightIdDTO element) {
-        if (userFlightDAO.findById(element.getId()).isPresent()) {
-            userFlightDAO.deleteById(element.getId());
+    @DeleteMapping("/remove_booking/{id}")
+    public void removeUserFlight(@PathVariable("id") int id) {
+        if (userFlightDAO.findById(id).isPresent()) {
+            userFlightDAO.deleteById(id);
         } else {
             throw new ExceptionWhenWorkingWithDB("Error deleted");
+        }
+    }
+
+    @PutMapping("/payment/{id}")
+    public void paymentFlight(@PathVariable("id") int id){
+        if(userFlightDAO.findById(id).isPresent()){
+            userFlightDAO.findById(id).map(userFlight -> {
+                userFlight.setPayment(true);
+                return userFlightDAO.save(userFlight);
+            });
+        } else {
+            throw new ExceptionWhenWorkingWithDB("Error payment");
         }
     }
 
