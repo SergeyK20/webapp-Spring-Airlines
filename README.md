@@ -27,11 +27,11 @@
 Для настройки работы с бд необходимо настроить application.properties файл:
 1. Создать в вашей бд новую базу данных, но не заполнять ее.
 2. Ввести url, после называния БД ввести ?serverTimezone=Europe/Minsk&useSSL=false
-для избежания ошибки TimeZone
+для избежания ошибки TimeZone.
 3.Необходимо ввести свой пароль, логин от БД. Диалект и драйвера используемой БД.
 4.А так же для автоматического генерирования БД  ввставить следующие строки
-spring.jpa.generate-ddl=true
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+  spring.jpa.generate-ddl=true
+  spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 
 Запуск приложения
 -----------------
