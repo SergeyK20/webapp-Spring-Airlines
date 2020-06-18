@@ -107,6 +107,7 @@ public class UserFlightController {
             throw new ExceptionWhenWorkingWithDB("Error deleted");
         }
     }
+
     @PutMapping("/payment/{id}")
     public void paymentFlight(@PathVariable("id") int id){
         if(userFlightDAO.findById(id).isPresent()){

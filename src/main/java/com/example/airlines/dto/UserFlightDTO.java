@@ -10,6 +10,7 @@ import java.util.List;
  * Список броннированных рейсов с аккаунтами
  */
 public class UserFlightDTO {
+    private int id;
     private FlightRoleUserDTO flightRoleUserDTO;
     private AccountRoleUserDTO accountRoleUserDTO;
     private boolean payment;
@@ -27,7 +28,9 @@ public class UserFlightDTO {
         List<UserFlightDTO> userFlightDTOS = new ArrayList<>();
 
         for (UserFlight element : userFlights) {
-            userFlightDTOS.add(new UserFlightDTO().userFlightInUserFlightDTO(element));
+            if(!element.isPayment()) {
+                userFlightDTOS.add(new UserFlightDTO().userFlightInUserFlightDTO(element));
+            }
         }
 
         return userFlightDTOS;
@@ -35,6 +38,7 @@ public class UserFlightDTO {
 
     public UserFlightDTO userFlightInUserFlightDTO(UserFlight element) {
         UserFlightDTO userFlightDTO = new UserFlightDTO();
+        userFlightDTO.setId(element.getId());
         userFlightDTO.setFlightRoleUserDTO(flightRoleUserDTO.flightToFlightClientDTO(element.getFlight()));
         userFlightDTO.setAccountRoleUserDTO(accountRoleUserDTO.accountUserToAccountDTO(element.getUser()));
         userFlightDTO.setPayment(element.isPayment());
@@ -42,7 +46,13 @@ public class UserFlightDTO {
     }
 
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public FlightRoleUserDTO getFlightRoleUserDTO() {
         return flightRoleUserDTO;

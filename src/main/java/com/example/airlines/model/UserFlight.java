@@ -53,4 +53,6 @@ public class UserFlight {
     public void setFlight(Flight flight) {
         this.flight = flight;
     }
+
+
 }
