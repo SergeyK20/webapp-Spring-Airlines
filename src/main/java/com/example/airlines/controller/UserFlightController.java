@@ -12,6 +12,7 @@ import com.example.airlines.exceptions.ExceptionWhenWorkingWithDB;
 import com.example.airlines.model.AccountUser;
 import com.example.airlines.model.Flight;
 import com.example.airlines.model.UserFlight;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class UserFlightController {
     /**
      * Возвращает все забронированные рейсы и пользователей, котрые забронировали рейс
      */
-    @GetMapping("all")
+    @GetMapping("/all")
     public List<UserFlightDTO> findAll() {
         UserFlightDTO userFlightDTO = new UserFlightDTO();
         return userFlightDTO.userFlightListInUserFlightDTOList(userFlightDAO.findAll());
@@ -106,7 +107,6 @@ public class UserFlightController {
             throw new ExceptionWhenWorkingWithDB("Error deleted");
         }
     }
-
     @PutMapping("/payment/{id}")
     public void paymentFlight(@PathVariable("id") int id){
         if(userFlightDAO.findById(id).isPresent()){

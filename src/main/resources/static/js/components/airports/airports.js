@@ -45,6 +45,7 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
     };
     $scope.updateAirport = function () {
         AirportService.updateAirport($scope.airport.id,$scope.airport.nameAirport,$scope.airport.airportInTheCity)
+            .then(AirportsData)
             .then(function success(response){
                     $scope.message = 'Airport data updated!';
                     $scope.errorMessage = '';
@@ -53,13 +54,12 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
                     $scope.errorMessage = 'Error updating airport!';
                     $scope.message = '';
                 });
-        setTimeout("location.reload(true);",1)
-        AirportsData();
     }
 
     $scope.addAirport = function () {
         if ($scope.airport != null ) {
             AirportService.addAirport($scope.airport.nameAirport, $scope.airport.airportInTheCity)
+                .then(AirportsData)
                 .then (function success(response){
                         $scope.message = 'Airport added!';
                         $scope.errorMessage = '';
@@ -73,12 +73,11 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
             $scope.errorMessage = 'Please enter a name!';
             $scope.message = '';
         }
-        setTimeout("location.reload(true);",1)
-        AirportsData();
     }
 
     $scope.deleteAirport = function (index) {
         AirportService.deleteAirport(index)
+            .then(AirportsData)
             .then (function success(response){
                     $scope.message = 'Airport deleted!';
                     $scope.airport = null;
@@ -89,7 +88,6 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
                     $scope.message='';
                 })
         AirportsData();
-        setTimeout("location.reload(true);",1)
     };
 
 })

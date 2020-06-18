@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Reserved</title>
@@ -11,21 +12,6 @@
     <ul class="navbar-nav mr-auto  nav-pills nav">
         <li class="nav-item">
             <a class="nav-link" href="/">Booking</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link " href="/flights.html"  sec:authorize="hasAuthority('ADMIN')">Flights</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/airports.html"  sec:authorize="hasAuthority('ADMIN')">Airports</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/aircraft.html" sec:authorize="hasAuthority('ADMIN')">Aircraft</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/city.html"  sec:authorize="hasAuthority('ADMIN')">City</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/user.html"  sec:authorize="hasAuthority('ADMIN')">User</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="/reserved.html">Reserved</a>
@@ -64,7 +50,7 @@
             <td>{{user_flight.flightRoleUserDTO.price}}</td>
             <td>{{user_flight.payment}}</td>
             <td>
-                <button id="update" ng-click="updateAccess(account.idAccount)" class= "btn btn-danger">Payment</button>
+                <button id="remove" ng-click="deleteFlight(user_flight.id)" class= "btn btn-danger">Remove</button>
             </td>
         </tr>
         </tbody>

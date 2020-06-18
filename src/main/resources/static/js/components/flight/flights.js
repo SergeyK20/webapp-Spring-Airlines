@@ -87,6 +87,7 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
         );
     };$scope.updateFlight = function () {
         AirportService.updateFlight($scope.flight.idFlight,$scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
+            .then(FlightsData)
             .then(function success(response){
                     $scope.message = 'Flight data updated!';
                     $scope.errorMessage = '';
@@ -95,12 +96,12 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
                     $scope.errorMessage = 'Error updating Flight!';
                     $scope.message = '';
                 });
-        setTimeout("location.reload(true);",1)
     }
 
     $scope.addFlight = function () {
         if ($scope.flight.departureDate != null ) {
             FlightService.addFlight($scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
+                .then(FlightsData)
                 .then (function success(response){
                         $scope.message = 'Flight added!';
                         $scope.errorMessage = '';
@@ -114,12 +115,11 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
             $scope.errorMessage = 'Please enter a name!';
             $scope.message = '';
         }
-        FlightsData();
-        setTimeout("location.reload(true);",1)
     }
 
     $scope.deleteFlight = function (index) {
         FlightService.deleteFlight(index)
+            .then(FlightsData)
             .then (function success(response){
                     $scope.message = 'Flight deleted!';
                     $scope.flight = null;
@@ -129,8 +129,6 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
                     $scope.errorMessage = 'Error deleting Flight!';
                     $scope.message='';
                 })
-        FlightsData();
-        setTimeout("location.reload(true);",1)
     }
 
 })

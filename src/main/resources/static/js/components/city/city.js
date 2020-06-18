@@ -1,5 +1,5 @@
 var app = angular.module('app',[]);
-app.controller("CityCtrl", function ($scope, $http, CityService) {
+app.controller("CityCtrl", function ($scope, $http, CityService,$route) {
     $scope.cities = [];
     $scope.city={
         id: 1,
@@ -57,6 +57,7 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
     $scope.addCity = function () {
         if ($scope.city != null && $scope.city.nameCity) {
             CityService.addCity($scope.city.nameCity)
+                .then(CityData)
                 .then (function success(response){
                         $scope.message = 'City added!';
                         $scope.errorMessage = '';
@@ -70,12 +71,11 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
             $scope.errorMessage = 'Please enter a name!';
             $scope.message = '';
         }
-        CityData();
-        setTimeout("location.reload(true);",1)
+        $route.reload();
     }
-
     $scope.deleteCity = function (index) {
         CityService.deleteCity(index)
+            .then(CityData)
             .then (function success(response){
                     $scope.message = 'City deleted!';
                     $scope.city = null;
@@ -85,8 +85,6 @@ app.controller("CityCtrl", function ($scope, $http, CityService) {
                     $scope.errorMessage = 'Error deleting city!';
                     $scope.message='';
                 })
-        CityData();
-        setTimeout("location.reload(true);",1)
     }
 
 

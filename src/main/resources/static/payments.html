@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet"
+      crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script type="text/javascript" src="js/components/angular.min.js"></script>
+<script type="text/javascript" src="js/components/main.js"></script>
+<body  ng-app="MainController" ng-controller="MainCtrl">
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <ul class="navbar-nav mr-auto  nav-pills nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/">Booking</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="/flights.html"sec:authorize="hasAuthority('ADMIN')">Flights</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/airports.html"sec:authorize="hasAuthority('ADMIN')">Airports</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/aircraft.html" sec:authorize="hasAuthority('ADMIN')">Aircraft</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/city.html"sec:authorize="hasAuthority('ADMIN')">City</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="/user.html"sec:authorize="hasAuthority('ADMIN')">User</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/payments.html"   sec:authorize="hasAuthority('ADMIN')">Payment</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/reserved.html">Reserved</a>
+        </li>
+    </ul>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <h3 sec:authentication="name" align="left"></h3>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-outline-secondary" href="/logout">logout</a>
+        </li>
+    </ul>
+</nav>
+<div class="container">
+    <table class="table table-striped table-bordered" style="width:100%">
+        <thead>
+        <th>login</th>
+        <th>Aircraft</th>
+        <th>Start Point</th>
+        <th>End Point</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Number Flight</th>
+        <th>Price</th>
+        <th>Payment</th>
+        <th></th>
+        </thead>
+        <tbody class="table-bordered">
+        <tr ng-repeat="users_flight in users_flights">
+            <td>{{users_flight.accountRoleUserDTO.login}}</td>
+            <td>{{users_flight.flightRoleUserDTO.aircraft.nameAircraft}}</td>
+            <td>{{users_flight.flightRoleUserDTO.airportArrival.nameAirport}}</td>
+            <td>{{users_flight.flightRoleUserDTO.airportDeparture.nameAirport}}</td>
+            <td>{{users_flight.flightRoleUserDTO.departureDate}}</td>
+            <td>{{users_flight.flightRoleUserDTO.departureTime}}</td>
+            <td>{{users_flight.flightRoleUserDTO.numFlight}}</td>
+            <td>{{users_flight.flightRoleUserDTO.price}}</td>
+            <td>{{users_flight.payment}}</td>
+            <td>
+                <button id="remove" ng-click="deleteFlight(users_flight.flightRoleUserDTO.id)" class= "btn btn-danger">Remove</button>
+                <button id="payment" ng-click="addPayment(users_flight.flightRoleUserDTO.id)" class= "btn btn-danger">Payment</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

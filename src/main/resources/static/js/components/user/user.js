@@ -25,6 +25,7 @@ app.controller("UserCtrl", function ($scope, $http, UserService) {
 
     $scope.updateAccess = function (index) {
         UserService.updateAccess(index)
+            .then(UserData)
             .then (function success(response){
                     $scope.message = 'update Access!';
                     $scope.account = null;
@@ -34,12 +35,11 @@ app.controller("UserCtrl", function ($scope, $http, UserService) {
                     $scope.errorMessage = 'Error update!';
                     $scope.message='';
                 })
-        UserData()
-        setTimeout("location.reload(true);",1)
     };
 
     $scope.reducingAccess = function (index) {
         UserService.reducingAccess(index)
+            .then(UserData)
             .then (function success(response){
                     $scope.message = 'update Access!';
                     $scope.account = null;
@@ -49,8 +49,6 @@ app.controller("UserCtrl", function ($scope, $http, UserService) {
                     $scope.errorMessage = 'Error update!';
                     $scope.message='';
                 })
-        UserData()
-        setTimeout("location.reload(true);",1)
     };
 
 });

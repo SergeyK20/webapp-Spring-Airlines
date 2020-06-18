@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="http://www.sprinfgramework.org/schema/security"
+>
 <head>
     <script>
         function disp(form) {
@@ -46,6 +47,9 @@
                 <a class="nav-link" href="/user.html">User</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/payments.html"   sec:authorize="hasAuthority('ADMIN')">Payment</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/reserved.html">Reserved</a>
             </li>
         </ul >
@@ -72,13 +76,13 @@
         <td><input type="text" id="nameCity" ng-model="city.nameCity" /></td>
     </tr>
     </table>
-    <a ng-click="updateCity(city.id,city.nameCity)"class="btn btn-outline-secondary">Update City</a>
-    <a ng-click="addCity(city.nameCity)"class="btn btn-outline-success">Add City</a>
+    <button  ng-click="addCity(city.nameCity)"class="btn btn-outline-success">Add City</button>
+    <button id="update" ng-click="updateCity(city.id,city.nameCity)"class="btn btn-outline-secondary">update</button>
 </div>
 </form>
 <div class="container mt-5" >
     <a  class="btn btn-outline-secondary" value="update" onclick="disp(document.getElementById('form1'))">redact</a>
-    <table class="table table-striped table-bordered" style="width:100%">
+    <table contenteditable='true' class="table table-striped table-bordered" style="width:100%">
         <thead>
         <th>id  City </th>
         <th>name City</th>

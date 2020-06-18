@@ -13,19 +13,22 @@
             <a class="nav-link" href="/">Booking</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="/flights.html">Flights</a>
+            <a class="nav-link " href="/flights.html"sec:authorize="hasAuthority('ADMIN')">Flights</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/airports.html">Airports</a>
+            <a class="nav-link" href="/airports.html"sec:authorize="hasAuthority('ADMIN')">Airports</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/aircraft.html" sec:authorize="hasAuthority('ADMIN')">Aircraft</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/city.html">City</a>
+            <a class="nav-link" href="/city.html"sec:authorize="hasAuthority('ADMIN')">City</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="/user.html">User</a>
+            <a class="nav-link active" href="/user.html"sec:authorize="hasAuthority('ADMIN')">User</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/payments.html"   sec:authorize="hasAuthority('ADMIN')">Payment</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/reserved.html">Reserved</a>

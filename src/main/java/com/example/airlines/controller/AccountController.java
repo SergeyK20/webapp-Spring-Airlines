@@ -10,6 +10,7 @@ import com.example.airlines.model.AccountUser;
 import com.example.airlines.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/accounts")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AccountController {
 
     private AccountUserDAO accountUserDAO;

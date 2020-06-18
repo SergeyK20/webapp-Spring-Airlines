@@ -24,6 +24,7 @@ app.controller("AircraftCtrl", function ($scope, $http, AircraftService) {
     };
     $scope.updateAircraft = function () {
         AircraftService.updateAircraft($scope.aircraft.id, $scope.aircraft.nameAircraft,$scope.aircraft.numberSeatsAircraft)
+            .then(AircraftData)
             .then(function success(response) {
                     $scope.message = 'Aircraft data updated!';
                     $scope.errorMessage = '';
@@ -32,33 +33,13 @@ app.controller("AircraftCtrl", function ($scope, $http, AircraftService) {
                     $scope.errorMessage = 'Error updating aircraft!';
                     $scope.message = '';
                 });
-        AircraftData();
-        setTimeout("location.reload(true);",1)
     }
 
-    $scope.getAircraft = function () {
-        var id = $scope.aircraft.id;
-        AircraftService.getAircraft($scope.aircraft.id)
-            .then(function success(response) {
-                    $scope.aircraft = response.data;
-                    $scope.aircraft.id = id;
-                    $scope.message = '';
-                    $scope.errorMessage = '';
-                },
-                function error(response) {
-                    $scope.message = '';
-                    if (response.status === 404) {
-                        $scope.errorMessage = 'Aircraft not found!';
-                    } else {
-                        $scope.errorMessage = "Error getting aircraft!";
-                    }
-                });
-        AircraftData()
-    }
 
     $scope.addAircraft = function () {
         if ($scope.aircraft != null && $scope.aircraft.nameAircraft) {
             AircraftService.addAircraft($scope.aircraft.nameAircraft,$scope.aircraft.numberSeatsAircraft)
+                .then(AircraftData)
                 .then(function success(response) {
                         $scope.message = 'Aircraft added!';
                         $scope.errorMessage = '';
@@ -71,12 +52,11 @@ app.controller("AircraftCtrl", function ($scope, $http, AircraftService) {
             $scope.errorMessage = 'Please enter a name!';
             $scope.message = '';
         }
-        AircraftData();
-        setTimeout("location.reload(true);",1)
     }
 
     $scope.deleteAircraft = function (index) {
         AircraftService.deleteAircraft(index)
+            .then(AircraftData)
             .then(function success(response) {
                     $scope.message = 'Aircraft deleted!';
                     $scope.aircraft = null;
@@ -86,9 +66,7 @@ app.controller("AircraftCtrl", function ($scope, $http, AircraftService) {
                     $scope.errorMessage = 'Error deleting Aircraft!';
                     $scope.message = '';
                 })
-        AircraftData();
-        setTimeout("location.reload(true);",1)
-    }
+       }
 
 
 });

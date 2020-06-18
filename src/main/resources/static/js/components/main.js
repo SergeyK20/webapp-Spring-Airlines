@@ -1,6 +1,6 @@
 var app = angular.module("MainController",[])
 
-app.controller("MainCtrl",function ($scope,$http,MainService) {
+app.controller("MainCtrl",function ($scope,$http,MainService,$route) {
     let airport1;
     let airport2;
     let aircraft;
@@ -20,6 +20,7 @@ app.controller("MainCtrl",function ($scope,$http,MainService) {
     };
     $scope.flights = [];
     $scope.user_flights=[];
+    $scope.users_flights=[];
     $scope.user_flight={
         id:1,
         flight:"",
@@ -37,6 +38,7 @@ app.controller("MainCtrl",function ($scope,$http,MainService) {
     };
     FlightsData()
     MainData()
+    MainsData()
     function MainData() {
         $http({
             method: 'GET',
@@ -44,6 +46,19 @@ app.controller("MainCtrl",function ($scope,$http,MainService) {
         }).then(
             function (res) { // success
                 $scope.user_flights = res.data;
+            },
+            function (res) { // error
+                console.log("Error: " + res.status + " : " + res.data);
+            }
+        );
+    };
+    function MainsData() {
+        $http({
+            method: 'GET',
+            url: '/user_flight/all'
+        }).then(
+            function (res) { // success
+                $scope.users_flights = res.data;
             },
             function (res) { // error
                 console.log("Error: " + res.status + " : " + res.data);
@@ -67,6 +82,7 @@ app.controller("MainCtrl",function ($scope,$http,MainService) {
     $scope.addBooking = function (index) {
         if ($scope.flight != null ) {
            MainService.addBooking(index)
+               .then(MainData)
                 .then (function success(response){
                         $scope.message = 'Place added!';
                         $scope.errorMessage = '';
@@ -80,8 +96,24 @@ app.controller("MainCtrl",function ($scope,$http,MainService) {
             $scope.errorMessage = 'Please enter a name!';
             $scope.message = '';
         }
-        FlightsData();
-        setTimeout("location.reload(true);",1)
+    };
+    $scope.addPayment = function (index) {
+        MainService.addPayment(index)
+            .then(MainsData)
+    }
+    $scope.deleteFlight = function (index) {
+        MainService.deleteFlight(index)
+            .then(MainsData)
+            .then(MainData)
+            .then (function success(response){
+                    $scope.message = 'Flight deleted!';
+                    $scope.flight = null;
+                    $scope.errorMessage='';
+                },
+                function error(response){
+                    $scope.errorMessage = 'Error deleting Flight!';
+                    $scope.message='';
+                })
     }
 
 })
@@ -94,5 +126,19 @@ app.service('MainService', ['$http', function ($http) {
             data:{id:id}
         });
     }
+    this.addPayment = function addPayment(id) {
+        return $http({
+            method: 'PUT',
+            url: '/user_flight/payment/'+id,
+        });
+    }
+
+    this.deleteFlight = function deleteFlight(id) {
+        return $http({
+            method: 'DELETE',
+            url: '/user_flight/remove_booking/' + id
+        })
+    }
+
 
 }]);
