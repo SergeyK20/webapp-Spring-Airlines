@@ -79,7 +79,7 @@
                 </td>
             </tr>
             <tr>
-                <td>airportDeparture</td>
+                <td>airportArrival</td>
                 <td><select ng-model="flight.airportArrival" style="width:100%">
                     <option ng-repeat="airport in airports"
                             value="{{airport}}">
@@ -111,10 +111,10 @@
                 </td>
             </tr>
         </table>
-        <a ng-click="updateFlight(flight.id,flight.numFlight, flight.airportDeparture, flight.airportArrival, flight.departureDate, flight.departureTime, flight.aircraft, flight.price)"
-           class="btn btn-outline-secondary">Update Flight</a>
-        <a ng-click="addFlight(flight.numFlight, flight.airportDeparture, flight.airportArrival, flight.departureDate, flight.departureTime, flight.aircraft, flight.price)"
-           class="btn btn-outline-success">Add Flight</a>
+        <button ng-click="updateFlight(flight.id,flight.numFlight, flight.airportDeparture, flight.airportArrival, flight.departureDate, flight.departureTime, flight.aircraft, flight.price)"
+           class="btn btn-outline-secondary">Update Flight</button>
+        <button ng-click="addFlight(flight.numFlight, flight.airportDeparture, flight.airportArrival, flight.departureDate, flight.departureTime, flight.aircraft, flight.price)"
+           class="btn btn-outline-success">Add Flight</button>
     </div>
 </div>
 </form>
