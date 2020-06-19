@@ -6,6 +6,9 @@
     <title>Booking.com</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet"
           crossorigin="anonymous">
+
+    <script type="text/javascript" src="js/components/angular.min.js"></script>
+    <script type="text/javascript" src="js/components/main.js"></script>
 </head>
 <body ng-app="MainController" ng-controller="MainCtrl">
 <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -45,6 +48,8 @@
     </ul>
 </nav>
 <div class="container">
+    <p style="color: green">{{message}}</p>
+    <p style="color: red">{{errorMessage}}</p>
     <table class="table table-striped table-bordered" style="width:100%">
         <thead>
         <th>numFlight</th>
@@ -74,9 +79,5 @@
         </tbody>
     </table>
 </div>
-
-
-<script type="text/javascript" src="js/components/angular.min.js"></script>
-<script type="text/javascript" src="js/components/main.js"></script>
 </body>
 </html>

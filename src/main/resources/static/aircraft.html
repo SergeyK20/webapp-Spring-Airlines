@@ -12,15 +12,9 @@
         }
     </script>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
-        <property name="templateResolver" ref="templateResolver" />
-        <property name="additionalDialects">
-            <set>
-                <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect" />
-            </set>
-        </property>
-    </bean>
+    <title>Aircraft</title>
+    <script type="text/javascript" src="js/components/angular.min.js"></script>
+    <script type="text/javascript" src="js/components/aircraft/aircraft.js"></script>
 </head>
 <body ng-app="aircraft" ng-controller="AircraftCtrl">
 <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -66,7 +60,7 @@
     <table>
         <tr>
             <td width="100">ID:</td>
-            <td><input type="text" id="id" ng-model="aircraft.id" /></td>
+            <td>{{aircraft.id}}</td>
         </tr>
         <tr>
             <td width="100">Name Aircraft:</td>
@@ -95,12 +89,12 @@
             <td>{{aircraft.numberSeatsAircraft}}</td>
             <td>
                 <button id="remove" ng-click="deleteAircraft(aircraft.id)" class= "btn btn-danger">Delete</button>
+                <button id="edit" ng-click="editAircraft(aircraft)" class= "btn btn-danger">Edit</button>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
 </body>
-<script type="text/javascript" src="js/components/angular.min.js"></script>
-<script type="text/javascript" src="js/components/aircraft/aircraft.js"></script>
+
 </html>

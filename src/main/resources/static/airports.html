@@ -14,14 +14,8 @@
     <title>Title</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet"
           crossorigin="anonymous">
-    <bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
-        <property name="templateResolver" ref="templateResolver" />
-        <property name="additionalDialects">
-            <set>
-                <bean class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect" />
-            </set>
-        </property>
-    </bean>
+    <script type="text/javascript" src="js/components/angular.min.js"></script>
+    <script type="text/javascript" src="js/components/airports/airports.js"></script>
 </head>
 <body  ng-app="Airports" ng-controller="AirportsCtrl">
 <nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -61,7 +55,6 @@
     </ul>
 </nav>
 <form id="form1" style="display: none;">
-    <div class="container-fluid">
         <div class="container" align="center">
             <p style="color: green">{{message}}</p>
             <p style="color: red">{{errorMessage}}</p>
@@ -70,11 +63,11 @@
                     <td width="100">ID:</td>
                     <td><input type="text" ng-model="airport.id" name="other" list="selectId">
                         <datalist type="text"  ng-model="airport.id" style="width:100%" id="selectId" >
-                        <option ng-repeat="airport in airports"
-                                value="{{airport.id}}">
-                            {{airport.nameAirport}} : {{airport.airportInTheCity.nameCity}}
-                        </option>
-                    </datalist>
+                            <option ng-repeat="airport in airports"
+                                    value="{{airport.id}}">
+                                {{airport.nameAirport}} : {{airport.airportInTheCity.nameCity}}
+                            </option>
+                        </datalist>
                     </td>
                 </tr>
                 <tr>
@@ -93,7 +86,6 @@
             <a ng-click="updateAirport(airport.id,airport.nameAirport,airport.airportInTheCity)"class="btn btn-outline-secondary">Update Airport</a>
             <a ng-click="addAirport(airport.nameAirport,airport.airportInTheCity)"class="btn btn-outline-success">Add Airport</a>
         </div>
-    </div>
 </form>
 <div class="container mt-5" ng-app="Airports" ng-controller="AirportsCtrl">
     <a class="btn btn-outline-secondary" value="update" onclick="disp(document.getElementById('form1'))">redact</a>
@@ -105,6 +97,7 @@
            </thead>
            <tbody class="table-bordered">
            <tr ng-repeat="airport in airports">
+               <td>{{airport.id}}</td>
                <td>{{airport.nameAirport}}</td>
                <td>{{airport.airportInTheCity.nameCity}}</td>
                <td>
@@ -116,6 +109,5 @@
    </div>
 
 </body>
-<script type="text/javascript" src="js/components/angular.min.js"></script>
-<script type="text/javascript" src="js/components/airports/airports.js"></script>
+
 </html>

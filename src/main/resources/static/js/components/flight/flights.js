@@ -1,26 +1,21 @@
 var app = angular.module("FlightsController", [])
 
-app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
+app.controller("FlightsCtrl", function ($scope, $http, FlightService) {
     $scope.flights = [];
     let airport1;
     let airport2;
     let aircraft;
-    $scope.cities=[];
-    $scope.aircrafts=[];
-    $scope.aircraft={
-        id:1,
-        nameAircraft:"Tu144",
-        numberSeatsAircraft:44
-    }
-    $scope.airport=[];
-    let city;
-    $scope.airport={
+    $scope.cities = [];
+    $scope.aircrafts = [];
+    $scope.aircraft = {
         id: 1,
-        nameAirport:"Kurumoch",
-        airportInTheCity:city
-    };
+        nameAircraft: "Tu144",
+        numberSeatsAircraft: 44
+    }
+    $scope.airports = [];
+    let city;
     $scope.flight = {
-        idFlight: "1",
+        id: "1",
         numFlight: "s12324",
         airportDeparture: airport1,
         airportArrival: airport2,
@@ -29,10 +24,21 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
         aircraft: aircraft,
         price: "5750"
     };
+    $scope.editFlight = function (flight) {
+            $scope.flight.id = flight.id,
+            $scope.flight.numFlight = flight.numFlight,
+            $scope.flight.airportDeparture = flight.airportDeparture,
+            $scope.flight.airportArrival = flight.airportArrival,
+            $scope.flight.departureDate = flight.departureDate,
+            $scope.flight.departureTime = flight.departureTime,
+            $scope.flight.aircraft = flight.aircraft,
+            $scope.flight.price = flight.price
+    };
     FlightsData()
     AirportsData()
     CityData()
     AircraftData()
+
     function AircraftData() {
         $http({
             method: 'GET',
@@ -46,6 +52,7 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
             }
         );
     };
+
     function CityData() {
         $http({
             method: 'GET',
@@ -59,6 +66,7 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
             }
         );
     };
+
     function AirportsData() {
         $http({
             method: 'GET',
@@ -85,33 +93,33 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
                 console.log("Error: " + res.status + " : " + res.data);
             }
         );
-    };$scope.updateFlight = function () {
-        AirportService.updateFlight($scope.flight.idFlight,$scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
+    };
+    $scope.updateFlight = function () {
+        FlightService.updateFlight($scope.flight.id, $scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
             .then(FlightsData)
-            .then(function success(response){
+            .then(function success(response) {
                     $scope.message = 'Flight data updated!';
                     $scope.errorMessage = '';
                 },
-                function error(response){
+                function error(response) {
                     $scope.errorMessage = 'Error updating Flight!';
                     $scope.message = '';
                 });
     }
 
     $scope.addFlight = function () {
-        if ($scope.flight.departureDate != null ) {
+        if ($scope.flight.departureDate != null) {
             FlightService.addFlight($scope.flight.numFlight, $scope.flight.airportDeparture, $scope.flight.airportArrival, $scope.flight.departureDate, $scope.flight.departureTime, $scope.flight.aircraft, $scope.flight.price)
                 .then(FlightsData)
-                .then (function success(response){
+                .then(function success(response) {
                         $scope.message = 'Flight added!';
                         $scope.errorMessage = '';
                     },
-                    function error(response){
+                    function error(response) {
                         $scope.errorMessage = 'Error adding Flight!';
                         $scope.message = '';
                     });
-        }
-        else {
+        } else {
             $scope.errorMessage = 'Please enter a name!';
             $scope.message = '';
         }
@@ -120,14 +128,14 @@ app.controller("FlightsCtrl", function ($scope, $http,FlightService) {
     $scope.deleteFlight = function (index) {
         FlightService.deleteFlight(index)
             .then(FlightsData)
-            .then (function success(response){
+            .then(function success(response) {
                     $scope.message = 'Flight deleted!';
                     $scope.flight = null;
-                    $scope.errorMessage='';
+                    $scope.errorMessage = '';
                 },
-                function error(response){
+                function error(response) {
                     $scope.errorMessage = 'Error deleting Flight!';
-                    $scope.message='';
+                    $scope.message = '';
                 })
     }
 
@@ -152,7 +160,8 @@ app.service('FlightService', ['$http', function ($http) {
                 departureDate: departureDate,
                 departureTime: departureTime,
                 aircraft: aircraft,
-                price: price}
+                price: price
+            }
         });
     }
 
@@ -163,12 +172,12 @@ app.service('FlightService', ['$http', function ($http) {
         })
     }
 
-    this.updateFlight = function updateFlight(idFlight, numFlight, airportDeparture, airportArrival, departureDate, departureTime, aircraft, price) {
+    this.updateFlight = function updateFlight(id, numFlight, airportDeparture, airportArrival, departureDate, departureTime, aircraft, price) {
         return $http({
             method: 'PUT',
-            url: '/flights/' + idFlight,
+            url: '/flights/' + id,
             data: {
-                idFlight: idFlight,
+                id: id,
                 numFlight: numFlight,
                 airportDeparture: airportDeparture,
                 airportArrival: airportArrival,

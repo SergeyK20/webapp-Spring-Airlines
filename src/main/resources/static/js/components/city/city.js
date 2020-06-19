@@ -5,7 +5,10 @@ app.controller("CityCtrl", function ($scope, $http, CityService,$route) {
         id: 1,
         nameCity:"hello"
     };
-
+    $scope.editCity = function(city) {
+        $scope.city.id = city.id;
+        $scope.city.nameCity = city.nameCity;
+    };
     CityData()
     function CityData() {
         $http({
@@ -22,6 +25,7 @@ app.controller("CityCtrl", function ($scope, $http, CityService,$route) {
     };
     $scope.updateCity = function () {
         CityService.updateCity($scope.city.id,$scope.city.nameCity)
+            .then(CityData)
             .then(function success(response){
                     $scope.message = 'City data updated!';
                     $scope.errorMessage = '';
@@ -30,13 +34,12 @@ app.controller("CityCtrl", function ($scope, $http, CityService,$route) {
                     $scope.errorMessage = 'Error updating city!';
                     $scope.message = '';
                 });
-        CityData();
-        setTimeout("location.reload(true);",1)
     }
 
     $scope.getCity = function (id) {
         var id = $scope.city.id;
         CityService.getCity($scope.city.id)
+            .then(CityData)
             .then(function success(response) {
                     $scope.city = response.data;
                     $scope.city.id = id;
@@ -51,7 +54,6 @@ app.controller("CityCtrl", function ($scope, $http, CityService,$route) {
                         $scope.errorMessage = "Error getting customer!";
                     }
                 });
-        CityData();
     }
 
     $scope.addCity = function () {

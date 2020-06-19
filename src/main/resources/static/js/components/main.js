@@ -11,13 +11,7 @@ app.controller("MainCtrl",function ($scope,$http,MainService,$route) {
         nameAircraft:"Tu144",
         numberSeatsAircraft:44
     }
-    $scope.airport=[];
-    let city;
-    $scope.airport={
-        id: 1,
-        nameAirport:"Kurumoch",
-        airportInTheCity:city
-    };
+
     $scope.flights = [];
     $scope.user_flights=[];
     $scope.users_flights=[];
@@ -99,6 +93,7 @@ app.controller("MainCtrl",function ($scope,$http,MainService,$route) {
     };
     $scope.addPayment = function (index) {
         MainService.addPayment(index)
+            .then(MainData)
             .then(MainsData)
     }
     $scope.deleteFlight = function (index) {

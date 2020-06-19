@@ -8,7 +8,11 @@ app.controller("AircraftCtrl", function ($scope, $http, AircraftService) {
     };
 
     AircraftData()
-
+    $scope.editAircraft = function(aircraft) {
+        $scope.aircraft.id = aircraft.id;
+        $scope.aircraft.nameAircraft = aircraft.nameAircraft;
+        $scope.aircraft.numberSeatsAircraft=aircraft.numberSeatsAircraft;
+    };
     function AircraftData() {
         $http({
             method: 'GET',

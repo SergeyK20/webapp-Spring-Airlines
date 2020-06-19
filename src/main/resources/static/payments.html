@@ -5,7 +5,7 @@
       crossorigin="anonymous">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Payments</title>
 </head>
 <script type="text/javascript" src="js/components/angular.min.js"></script>
 <script type="text/javascript" src="js/components/main.js"></script>
@@ -72,9 +72,10 @@
             <td>{{users_flight.flightRoleUserDTO.price}}</td>
             <td>{{users_flight.payment}}</td>
             <td>
-                <button id="remove" ng-click="deleteFlight(users_flight.flightRoleUserDTO.id)" class= "btn btn-danger">Remove</button>
-                <button id="payment" ng-click="addPayment(users_flight.flightRoleUserDTO.id)" class= "btn btn-danger">Payment</button>
+                <button id="remove" ng-click="deleteFlight(users_flight.id)" class= "btn btn-danger">Remove</button>
+                <button id="payment" ng-click="addPayment(users_flight.id)" class= "btn btn-danger">Payment</button>
             </td>
+
         </tr>
         </tbody>
     </table>

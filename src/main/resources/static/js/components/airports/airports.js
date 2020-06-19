@@ -9,11 +9,17 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
     city ={id: 1,
         nameCity:"hello"};
     $scope.airport={
+        airportInTheCity: city,
         id: 1,
         nameAirport:"Kurumoch",
-        airportInTheCity: city
+    };
+    $scope.editAirport = function(airport) {
+        $scope.airport.airportInTheCity = airport.airportInTheCity;
+        $scope.airport.id = airport.id;
+        $scope.airport.nameAirport = airport.nameAirport;
     };
     $scope.cities=[];
+
 
     AirportsData()
     _refreshCityData()
@@ -93,12 +99,6 @@ app.controller("AirportsCtrl", function($scope,$http,AirportService){
 })
 app.service('AirportService',['$http', function ($http) {
 
-    this.getAirport = function getAirport(id){
-        return $http({
-            method: 'GET',
-            url: '/airports/'+id
-        });
-    }
 
     this.addAirport = function addAirport(nameAirport,airportInTheCity){
         return $http({
