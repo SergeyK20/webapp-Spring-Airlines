@@ -16,8 +16,12 @@ public class FlightParser {
         Flight flight = new Flight();
         JSONObject jsonObject = new JSONObject(flightString);
         flight.setNumFlight(jsonObject.getString("numFlight"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        flight.setDepartureDate(LocalDate.parse(jsonObject.getString("departureDate"), formatter));
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            flight.setDepartureDate(LocalDate.parse(jsonObject.getString("departureDate"), formatter));
+        } catch (Exception e){
+            flight.setDepartureDate(LocalDate.parse(jsonObject.getString("departureDate")));
+        }
         flight.setDepartureTime(LocalTime.parse(jsonObject.getString("departureTime")));
         flight.setPrice(jsonObject.getInt("price"));
         flight.setAirportDeparture(new Airport());
