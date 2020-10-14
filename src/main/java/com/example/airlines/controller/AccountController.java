@@ -26,14 +26,17 @@ public class AccountController {
 
     private AccountUserDAO accountUserDAO;
 
+    private AccountRoleUserDTO accountRoleUserDTO;
+
+
     @Autowired
-    public AccountController(AccountUserDAO accountUserDAO) {
+    public AccountController(AccountUserDAO accountUserDAO, AccountRoleUserDTO accountRoleUserDTO) {
         this.accountUserDAO = accountUserDAO;
+        this.accountRoleUserDTO = accountRoleUserDTO;
     }
 
     @GetMapping
     public List<AccountRoleUserDTO> findAccounts() {
-        AccountRoleUserDTO accountRoleUserDTO = new AccountRoleUserDTO();
         return accountRoleUserDTO.accountUserListInAccountRoleUserDTOList(accountUserDAO.findAll());
     }
 

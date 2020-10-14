@@ -2,6 +2,9 @@ package com.example.airlines.dto;
 
 import com.example.airlines.model.AccountUser;
 import com.example.airlines.model.Role;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,7 @@ import java.util.Set;
 /**
  * Ксласс выводящий  аккаунты
  */
+@Component
 public class AccountRoleUserDTO {
 
     private int idAccount;
